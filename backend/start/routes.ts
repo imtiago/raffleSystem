@@ -20,7 +20,6 @@
 
 // import Event from '@ioc:Adonis/Core/Event'
 import Route from '@ioc:Adonis/Core/Route'
-import WhatsApp from 'App/Listeners/WhatsApp'
 // import WhatsApp from 'App/Listeners/WhatsApp'
 
 Route.get('/teste', async ()=>{
@@ -32,6 +31,7 @@ Route.get('/teste', async ()=>{
     // new WhatsApp();
 })
 
+Route.get('/users/:userId/verify/:tokenId', 'UsersController.verify')
 Route.post('/signIn', 'UsersController.signIn')
 Route.get('/logout', 'UsersController.logout')
 
@@ -65,6 +65,13 @@ Route.group(() => {
     // Route.get('/:name', 'ProductsController.index')
   })
   .prefix('/products')
+
+  Route.group(() => {
+    // Route.post('/add', 'ProductsController.store')
+    Route.get('/', 'RafflesController.index')
+    // Route.get('/:name', 'ProductsController.index')
+  })
+  .prefix('/raffles')
   
   Route.group(() => {
     Route.post('/assign', 'RolesController.assign')
@@ -98,6 +105,7 @@ Route.group(() => {
 Route.get('/', async () => {
   return { hello: 'world' }
 })
+
 Route.post('/teste', async () => {
   return { hello: 'world' }
 }).middleware('image')

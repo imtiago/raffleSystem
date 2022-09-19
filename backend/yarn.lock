@@ -915,9 +915,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@wppconnect/wa-js@^2.11.0":
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/@wppconnect/wa-js/-/wa-js-2.11.1.tgz#b75fa24635e7996ae340d7347d48861fdefbf826"
-  integrity sha512-YGOa+pLW/Gu8VoQHrq1zaYFApLoyRoADEv+5BTE3lUmndaTn15gGpBnW3ZKfyEiP5ZuX8cqEfhily1OKuXnyiQ==
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/@wppconnect/wa-js/-/wa-js-2.12.0.tgz#899aa40e50fc5d67a41236f39c7aa0c6e32ca7a0"
+  integrity sha512-vBsS0SEhegxcUfdtzH+lRs6W99ZKsC2FE3K9IxHTnBgvTpEdAZruAEsN+6/OB/DMzt+IPlqZEUYakObmGJylww==
 
 abbrev@1:
   version "1.1.1"
@@ -5801,9 +5801,9 @@ safe-regex@^1.1.0:
     ret "~0.1.10"
 
 safe-stable-stringify@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/safe-stable-stringify/-/safe-stable-stringify-2.3.1.tgz#ab67cbe1fe7d40603ca641c5e765cb942d04fc73"
-  integrity sha512-kYBSfT+troD9cDA85VDnHZ1rpHC50O0g1e6WlGHVCz/g+JS+9WKLj+XwFYyR8UbrZN8ll9HUpDAAddY58MGisg==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/safe-stable-stringify/-/safe-stable-stringify-2.4.0.tgz#95fadb1bcf8057a1363e11052122f5da36a69215"
+  integrity sha512-eehKHKpab6E741ud7ZIMcXhKcP6TSIezPkNZhy5U8xC6+VvrRdUA2tMgxGxaGl4cz7c2Ew5+mg5+wNB16KQqrA==
 
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"

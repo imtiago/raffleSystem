@@ -6,7 +6,7 @@ export default class Raffles extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id')
-    //   table.integer('completion_date').notNullable()
+      // table.integer('completion_date').notNullable();
     //   table.string('numbers_available').notNullable()
     //   table
     //   .integer('product_id')
