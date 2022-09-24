@@ -1,8 +1,12 @@
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
 import React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountPopover from '../../../layouts/dashboard/AccountPopover';
 
 const rightLink = {
   fontSize: 16,
@@ -10,6 +14,9 @@ const rightLink = {
   ml: 3,
 };
 
+
+const qntItensCar = 5;
+const userLogged = false;
 const AppAppBar: React.FC = () => {
   return (
     <div>
@@ -20,13 +27,31 @@ const AppAppBar: React.FC = () => {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/"
+            // href="/"
             sx={{ fontSize: 24 }}
           >
             {'nome da empresa'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
             <Link
+              color="inherit"
+              variant="h6"
+              underline="none"
+              href="/signIn/"
+              sx={rightLink}
+            >
+              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={qntItensCar} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+            </Link>
+            {
+            userLogged?
+            <AccountPopover />
+            :
+            <div>
+<Link
               color="inherit"
               variant="h6"
               underline="none"
@@ -43,6 +68,10 @@ const AppAppBar: React.FC = () => {
             >
               {'Registre-se'}
             </Link>
+            </div>
+              
+            }
+            
           </Box>
         </Toolbar>
       </AppBar>

@@ -27,7 +27,8 @@ export default class StoreProductValidator {
     name: schema.string(),
     price: schema.number(),
     details: schema.string(),
-    new: schema.boolean(),
+    isNew: schema.boolean(),
+    // images: schema.boolean(),
     link: schema.string.optional([
       rules.url()
     ])

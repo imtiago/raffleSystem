@@ -13,9 +13,10 @@ import DashboardLayout from '../layouts/dashboard';
 // //
 // import Blog from '../pages/Blog';
 import User from '../pages/User';
-import Raffle from '../pages/Raffle';
+import Raffle from '../pages/Raffle/index3';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
+import Teste from '../pages/Teste';
 import NotFound from '../pages/Page404';
 import Product from '../pages/Product';
 import LogoOnlyLayout from "../layouts/LogoOnlyLayout";
@@ -31,6 +32,7 @@ import navConfig from "../layouts/dashboard/NavConfig";
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/teste" element={<Teste />} />
       <Route path="/index" element={<Home />} />
       <Route path='/signUp' element={<SignUp />} />,
       <Route path="/signIn" element={<SignIn />} />

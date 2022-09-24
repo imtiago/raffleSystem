@@ -31,6 +31,7 @@ export const AccountProfileDetails = () => {
     lastName: Yup.string().required('Ultimo nome é obrigatório'),
     cpf: Yup.string().required('CPF é obrigatório'),
     rg: Yup.string().required('RG obrigatório'),
+    phone: Yup.string().required('Telefone é obrigatório'),
     birthDay: Yup.date().required('Data de Nascimento obrigatório'),
     email: Yup.string().email('Somente endereços de e-mail').required('Email é obrigatório'),
     password: Yup.string().required('Senha é Obrigatória'),
@@ -87,6 +88,14 @@ export const AccountProfileDetails = () => {
               xs={12}
             >
               <RHFTextField name="email" label="Endereço de Email" />
+
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <RHFTextField type="tel" name="phone" label="Whatsapp" />
 
             </Grid>
             <Grid

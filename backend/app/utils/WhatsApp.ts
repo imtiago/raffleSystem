@@ -60,4 +60,11 @@ export default class WhatsApp {
     await this.cliente.sendText(numberToSend, body);
     return { status: "ok" };
   }
+
+  public async sendLink(to: string, link: string, msn: string) {
+    if (!this.connected) return { status: "notConnected" };
+    const numberToSend = `55${to}@c.us`;
+    await this.cliente.sendLinkPreview(numberToSend, link, msn);
+    return { status: "ok" };
+  }
 }

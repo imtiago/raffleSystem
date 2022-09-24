@@ -12,7 +12,7 @@ import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
 import api from '../../../services/api';
 import {useAuth} from '../../../context/AuthContext';
-import {Alert} from '@mui/material'
+import CustomAlert from '../../../components/Alert'
 
 
 // ----------------------------------------------------------------------
@@ -24,14 +24,20 @@ export default function RegisterForm({indicationCode}: IProps) {
   const { signIn } = useAuth()
   const navigate = useNavigate();
   
-  const [open, setOpen] = useState(null);
-
-  const handleOpen = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  
+  const [openAlert, setOpenAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const defaultValues = {
+    firstName: '',
+    lastName: '',
+    phone: '',
+    // rg: '',
+    // birthDay: '',
+    indicationCode: indicationCode || '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('Primeiro nome é obrigatório'),
@@ -48,18 +54,6 @@ export default function RegisterForm({indicationCode}: IProps) {
     // confirmPassword: Yup.string().required('Confirmação de senha obrigatório'),
   });
 
-  const defaultValues = {
-    firstName: '',
-    lastName: '',
-    phone: '',
-    // rg: '',
-    // birthDay: '',
-    indicationCode: indicationCode || '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  };
-
   const methods = useForm({
     resolver: yupResolver(RegisterSchema),
     defaultValues,
@@ -68,13 +62,21 @@ export default function RegisterForm({indicationCode}: IProps) {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = methods;
+
+  const handleOpen = () => {
+    setOpenAlert(true);
+  };
 
   const onSubmit = async (data) => {
     try{
       await api.post('/users/',data)
-      const {email, password} = data;
-      signIn({email, password})
+      handleOpen();
+      localStorage.removeItem('indicationCode');
+      reset()
+      // const {email, password} = data;
+      // signIn({email, password})
     }catch (error){
       alert("ocorreu um erro")
     }
@@ -128,6 +130,9 @@ export default function RegisterForm({indicationCode}: IProps) {
           Cadastrar-se
         </LoadingButton>
       </Stack>
+      {
+openAlert &&<CustomAlert />
+      }
     </FormProvider>
   );
 }

@@ -80,9 +80,9 @@ export default function SignIn() {
 
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
+              Ainda Não possui uma conta? {''}
               <Link variant="subtitle2" component={RouterLink} to="/signUp">
-                Get started
+                Cadastrar-se
               </Link>
             </Typography>
           )}
@@ -99,21 +99,21 @@ export default function SignIn() {
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Typography variant="h4" gutterBottom>
-              Login para NOME DO SISTEMA
+            <Typography sx={{ mb: 5 }} align='center' variant="h4" gutterBottom>
+              Faça seu Login
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
+            {/* <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography> */}
 
-            <AuthSocial />
+            {/* <AuthSocial /> */}
 
             <LoginForm />
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
+                Ainda Não possui uma conta? {''}
                 <Link variant="subtitle2" component={RouterLink} to="/register">
-                  Get started
+                Cadastrar-se
                 </Link>
               </Typography>
             )}

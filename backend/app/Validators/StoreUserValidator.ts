@@ -35,7 +35,7 @@ export default class StoreUserValidator {
     ]),
     password: schema.string({},[rules.confirmed('confirmPassword')]),
     indicationCode: schema.string.optional({}, [
-      // rules.exists({ table: "users", column: "email" }),
+      rules.exists({ table: "indication_codes", column: "indication_code" }),
     ]),
   });
   // public schema = schema.create({

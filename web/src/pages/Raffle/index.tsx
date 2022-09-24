@@ -1,242 +1,253 @@
-import { faker } from '@faker-js/faker';
-// @mui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography, Stack, Button } from '@mui/material';
+import { filter } from 'lodash';
+import { sentenceCase } from 'change-case';
+import { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+// material
+import {
+  Card,
+  Table,
+  Stack,
+  Avatar,
+  Button,
+  Checkbox,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  TablePagination,
+  Modal,
+} from '@mui/material';
 // components
 import Page from '../../components/Page';
+import Label from '../../components/Label';
+import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
-// sections
-import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
-} from '../../sections/@dashboard/app';
+import SearchNotFound from '../../components/SearchNotFound';
+import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user';
+// mock
+import api from '../../services/api';
+import { RegisterForm } from '../../sections/auth/register';
+import  RegisterUserModal  from '../../components/Modals/RegisterUser';
 
 // ----------------------------------------------------------------------
 
-export default function Index() {
-  const theme = useTheme();
+const TABLE_HEAD = [
+  { id: 'name', label: 'Nome', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
+  { id: 'role', label: 'Perfil', alignRight: false },
+  // { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'phone', label: 'Whatsapp', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
+  { id: '' },
+];
+
+// ----------------------------------------------------------------------
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function applySortFilter(array, comparator, query) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
+
+export default function index() {
+  const [page, setPage] = useState(0);
+
+  const [itemsList, setItemsList] = useState([]);
+
+  const [order, setOrder] = useState('asc');
+
+  const [selected, setSelected] = useState([]);
+
+  const [orderBy, setOrderBy] = useState('name');
+
+  const [filterName, setFilterName] = useState('');
+
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = itemsList.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    }
+    setSelected(newSelected);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - itemsList?.length) : 0;
+
+  const filteredItems = applySortFilter(itemsList, getComparator(order, orderBy), filterName);
+
+  const isUserNotFound = filteredItems.length === 0;
+
+
+  useEffect(()=>{
+    const getUsers = async ()=>{
+      try{
+        const response = await api.get('/users')
+        setItemsList(response.data)
+      }catch{
+
+      }
+    }
+    getUsers()
+  },[])
 
   return (
-    <Page title="Concursos">
-      <Container maxWidth="xl">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+    <Page title="Usuários">
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Concursos
+            Usuários
           </Typography>
-          {/* <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}> */}
-          <Button variant="contained" to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Novo Concurso
-          </Button>
+          <RegisterUserModal />
         </Stack>
 
-        <Grid container spacing={3}>
-          {/* <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
-          </Grid>
+        <Card>
+          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid> */}
-
-          {/* <Grid item xs={12} md={6} lg={12}> */}
-          <Grid container spacing={3}>
-            
-           <Grid item xs={12} md={6} lg={2}>
-              <AppCurrentVisits
-                title="Percentual de Participação"
-                chartData={[
-                  // { label: 'America', value: 4344 },
-                  { label: 'Adquiridas', value: 700 },
-                  { label: 'Restantes', value: 300 },
-                  // { label: 'Europe', value: 1443 },
-                  // { label: 'Africa', value: 4443 },
-                ]}
-                chartColors={[
-                  // theme.palette.primary.main,
-                  // theme.palette.chart.blue[0],
-                  // theme.palette.chart.violet[0],
-                  // theme.palette.chart.yellow[0],
-                  theme.palette.chart.green[0],
-                  theme.palette.chart.yellow[0],
-                ]}
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={itemsList?.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
                 />
-            </Grid>
+                 <TableBody>
+                  {filteredItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { id, fullName,email, status, phone, avatarUrl } = row;
+                    const isItemSelected = selected.indexOf(name) !== -1;
 
-            <Grid item xs={12} md={6} lg={4}>
-              <AppWebsiteVisits
-                title="Website Visits"
-                subheader="(+43%) than last year"
-                chartLabels={[
-                  '01/01/2003',
-                  '02/01/2003',
-                  '03/01/2003',
-                  '04/01/2003',
-                  '05/01/2003',
-                  '06/01/2003',
-                  '07/01/2003',
-                  '08/01/2003',
-                  '09/01/2003',
-                  '10/01/2003',
-                  '11/01/2003',
-                ]}
-                chartData={[
-                  {
-                    name: 'Team A',
-                    type: 'column',
-                    fill: 'solid',
-                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                  },
-                  {
-                    name: 'Team B',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                  },
-                  {
-                    name: 'Team C',
-                    type: 'line',
-                    fill: 'solid',
-                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                  },
-                ]}
-              />
-            </Grid>
+                    return (
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={isItemSelected}
+                        aria-checked={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Avatar alt={name} src={avatarUrl} />
+                            <Typography variant="subtitle2" noWrap>
+                              {fullName}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        {/* <TableCell align="left">{role}</TableCell> */}
+                        <TableCell align="left">{'Yes'}</TableCell>
+                        <TableCell align="left">{phone}</TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
+                            {sentenceCase(status)}
+                          </Label>
+                        </TableCell>
 
-            <Grid item xs={12} md={6} lg={4}>
-              <AppCurrentVisits
-                title="Percentual de Participação"
-                chartData={[
-                  { label: 'Adquiridas', value: 700 },
-                  { label: 'Restantes', value: 300 },
-                ]}
-                chartColors={[
-                  theme.palette.primary.main,
-                  theme.palette.chart.yellow[0],
-                ]}
-                />
-            </Grid>
-          </Grid>
+                        <TableCell align="right">
+                          <UserMoreMenu />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
 
-          {/* <Grid item xs={12} md={6} lg={8}>
-            <AppConversionRates
-              title="Conversion Rates"
-              subheader="(+43%) than last year"
-              chartData={[
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
-                { label: 'Canada', value: 470 },
-                { label: 'France', value: 540 },
-                { label: 'Germany', value: 580 },
-                { label: 'South Korea', value: 690 },
-                { label: 'Netherlands', value: 1100 },
-                { label: 'United States', value: 1200 },
-                { label: 'United Kingdom', value: 1380 },
-              ]}
-            />
-          </Grid>
+                {/* {isUserNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}  */}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject
-              title="Current Subject"
-              chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
-              chartData={[
-                { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-                { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-                { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-              ]}
-              chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppNewsUpdate
-              title="News Update"
-              list={[...Array(5)].map((_, index) => ({
-                id: faker.datatype.uuid(),
-                title: faker.name.jobTitle(),
-                description: faker.name.jobTitle(),
-                image: `/static/mock-images/covers/cover_${index + 1}.jpg`,
-                postedAt: faker.date.recent(),
-              }))}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppOrderTimeline
-              title="Order Timeline"
-              list={[...Array(5)].map((_, index) => ({
-                id: faker.datatype.uuid(),
-                title: [
-                  '1983, orders, $4220',
-                  '12 Invoices have been paid',
-                  'Order #37745 from September',
-                  'New order placed #XF-2356',
-                  'New order placed #XF-2346',
-                ][index],
-                type: `order${index + 1}`,
-                time: faker.date.past(),
-              }))}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTrafficBySite
-              title="Traffic by Site"
-              list={[
-                {
-                  name: 'FaceBook',
-                  value: 323234,
-                  icon: <Iconify icon={'eva:facebook-fill'} color="#1877F2" width={32} height={32} />,
-                },
-                {
-                  name: 'Google',
-                  value: 341212,
-                  icon: <Iconify icon={'eva:google-fill'} color="#DF3E30" width={32} height={32} />,
-                },
-                {
-                  name: 'Linkedin',
-                  value: 411213,
-                  icon: <Iconify icon={'eva:linkedin-fill'} color="#006097" width={32} height={32} />,
-                },
-                {
-                  name: 'Twitter',
-                  value: 443232,
-                  icon: <Iconify icon={'eva:twitter-fill'} color="#1C9CEA" width={32} height={32} />,
-                },
-              ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AppTasks
-              title="Tasks"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
-            />
-          </Grid> */}
-        </Grid>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={itemsList?.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
       </Container>
-     </Page>
+    </Page>
   );
 }

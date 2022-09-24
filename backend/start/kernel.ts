@@ -42,7 +42,8 @@ Server.middleware.register([
 */
 Server.middleware.registerNamed({
   auth: () => import('App/Middleware/Auth'),
-  image: () => import('App/Middleware/Image')  
+  image: () => import('App/Middleware/Image'),
+  acl: () => import('App/Middleware/Acl') 
   // is: 'Adonis/Acl/Is',
   // can: 'Adonis/Acl/Can',
   // acl: 'Adonis/Acl/Acl',

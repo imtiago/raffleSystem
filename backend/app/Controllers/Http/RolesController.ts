@@ -5,6 +5,7 @@ import StoreRoleValidator from "App/Validators/role/StoreRoleValidator";
 import FindRoleByIdValidator from "App/Validators/role/FindRoleByIdValidator";
 import UpdateRoleValidator from "App/Validators/role/UpdateRoleValidator";
 import AssignRoleValidator from "App/Validators/role/AssignRoleValidator";
+import AssignPermissionsRoleValidator from "App/Validators/role/AssignPermissionsRoleValidator";
 import User from "App/Models/User";
 
 export default class RolesController {
@@ -41,6 +42,15 @@ export default class RolesController {
     return response.ok(role);
     
   }
+
+  public async assignPermissions({ request, response }: HttpContextContract) {
+    Logger.info("Assign permissions");
+    const {permissions, role_id} = await request.validate(AssignPermissionsRoleValidator);
+    const role = await Role.find(role_id);
+    await role?.related('permissions').sync(permissions)
+    return response.created();
+  }
+
   // public async delete({ request, response }: HttpContextContract) {
   //   Logger.info("A info message");
   //   const { id } = await request.validate(FindRoleByIdValidator);

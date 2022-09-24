@@ -6,6 +6,9 @@ import AppBaseModel from './AppBaseModel'
 export default class RaffleProduct extends AppBaseModel {
   @column({ isPrimary: true })
   public id: number
+  
+  @column()
+  public quantity: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

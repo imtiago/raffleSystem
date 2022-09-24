@@ -25,7 +25,8 @@ import api from '../../services/api';
 interface Dash {
   qntUsers: number,
   qntRaffles: number,
-  qntProducts: number
+  qntProducts: number,
+  qntOrders: number
 }
 
 export default function Index() {
@@ -53,21 +54,21 @@ export default function Index() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Usuários" total={dash?.qntUsers} icon={'ant-design:android-filled'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Produtos " total={dash?.qntProducts} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Concursos" total={dash?.qntRaffles} color="warning" icon={'ant-design:windows-filled'} />
           </Grid>
 
-          {/* <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid> */}
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary title="Pedidos" total={dash?.qntOrders} color="error" icon={'ant-design:bug-filled'} />
+          </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits

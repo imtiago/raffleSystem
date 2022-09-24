@@ -1,11 +1,15 @@
 import { DateTime } from 'luxon'
-import { beforeCreate, beforeSave, column, computed, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import { afterCreate, afterSave, beforeCreate, beforeSave, column, computed, HasMany, hasMany, HasOne, hasOne, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { v4 as uuidv4 } from 'uuid'
 import Role from './Role'
 import Permission from './Permission'
 import CamelCaseNamingStrategy from 'App/Strategies/CamelCaseNamingStrategy'
 import AppBaseModel from './AppBaseModel'
+import Order from './Order'
+import IndicationCode from './IndicationCode'
+import makeCode from 'App/utils/RandomCode'
+import { EnumStatusUser } from 'App/utils/Enums'
 
 // import Address from './Address'
 
@@ -75,6 +79,12 @@ export default class User extends AppBaseModel {
     pivotTimestamps: true
   })
   public permissions: ManyToMany<typeof Permission>
+  
+  @hasMany(() => Order)
+  public orders: HasMany<typeof Order>
+
+  @hasOne(() => IndicationCode)
+  public indicationCode: HasOne<typeof IndicationCode>
 
   //Computer Props
   @computed()
@@ -93,6 +103,7 @@ export default class User extends AppBaseModel {
   @beforeCreate()
   public static assignUuid(user: User) {
     user.id = uuidv4()
+    user.status = EnumStatusUser.inactive.status
   }
 
   @beforeSave()
@@ -100,6 +111,15 @@ export default class User extends AppBaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  @afterCreate()
+  public static async assignIndicationCode (user: User) {
+    const role = await Role.findByOrFail("name", "ROLE_ASSOCIATE");
+    await user.related("roles").saveMany([role]);
+    await user.related('indicationCode').create({
+      indicationCode: `${user.firstName}_${makeCode(6)}`
+    })
   }
 
   // static get traits () {

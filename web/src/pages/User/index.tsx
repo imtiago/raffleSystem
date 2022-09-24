@@ -29,7 +29,7 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@das
 // mock
 import api from '../../services/api';
 import { RegisterForm } from '../../sections/auth/register';
-import  RegisterUserModal  from '../../components/Modals/RegisterUser';
+import RegisterUserModal from '../../components/Modals/RegisterUser';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +38,8 @@ const TABLE_HEAD = [
   { id: 'email', label: 'email', alignRight: false },
   { id: 'role', label: 'Perfil', alignRight: false },
   // { id: 'isVerified', label: 'Verified', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
+  { id: 'phone', label: 'Whatsapp', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -137,18 +138,15 @@ export default function index() {
 
   const isUserNotFound = filteredItems.length === 0;
 
-
-  useEffect(()=>{
-    const getUsers = async ()=>{
-      try{
-        const response = await api.get('/users')
-        setItemsList(response.data)
-      }catch{
-
-      }
-    }
-    getUsers()
-  },[])
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await api.get('/users');
+        setItemsList(response.data);
+      } catch {}
+    };
+    getUsers();
+  }, []);
 
   return (
     <Page title="Usuários">
@@ -175,9 +173,9 @@ export default function index() {
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
-                 <TableBody>
+                <TableBody>
                   {filteredItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, fullName, email, status, phone, avatarUrl } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
@@ -196,13 +194,14 @@ export default function index() {
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {fullName}
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{company}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        {/* <TableCell align="left">{role}</TableCell> */}
+                        <TableCell align="left">{'Yes'}</TableCell>
+                        <TableCell align="left">{phone}</TableCell>
                         <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
                             {sentenceCase(status)}

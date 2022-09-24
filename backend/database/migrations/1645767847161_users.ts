@@ -14,11 +14,7 @@ export default class Users extends BaseSchema {
       table.string('email', 255).notNullable().unique()
       table.string('phone', 15).notNullable().unique()
       table.string('password', 180).notNullable()
-      table.enu('status', ['PENDENTE', 'ATIVO'], {
-        useNative: true,
-        enumName: 'user_status',
-        existingType: false,
-      })
+      table.string('status',50).notNullable()
       table.string('avatar_url').nullable()
       table.string('qr_code_url').nullable()
       table.string('remember_me_token').nullable()

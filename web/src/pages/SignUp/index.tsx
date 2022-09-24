@@ -59,29 +59,28 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
-  const { userLogged } = useAuth()
+  const { userLogged } = useAuth();
   const navigate = useNavigate();
   const smUp = useResponsive('up', 'sm');
-  
+
   const mdUp = useResponsive('up', 'md');
 
-  const [params,] = useSearchParams();
+  const indicationCode = localStorage.getItem('indicationCode');
 
-const indicationCode = params.get("indicationCode") || ''
+  // const indicationCode = params.get("indicationCode") || ''
 
-  useEffect(()=>{
-    if(userLogged())
-    navigate('/dashboard', { replace: true });
-  },[])
+  useEffect(() => {
+    if (userLogged()) navigate('/dashboard', { replace: true });
+  }, []);
 
   return (
-      <Page title="Register">
+    <Page title="Register">
       <RootStyle>
         <HeaderStyle>
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Already have an account? {''}
+              Já possui uma conta? {''}
               <Link variant="subtitle2" component={RouterLink} to="/login">
                 Login
               </Link>
@@ -92,7 +91,7 @@ const indicationCode = params.get("indicationCode") || ''
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              Gerencie todas as tarefas de forma simples, eficiênte e eficáz
             </Typography>
             <img alt="register" src="/static/illustrations/illustration_register.png" />
           </SectionStyle>
@@ -100,31 +99,31 @@ const indicationCode = params.get("indicationCode") || ''
 
         <Container>
           <ContentStyle>
-            <Typography variant="h4" gutterBottom>
+            <Typography align="center" sx={{ mb: 5 }} variant="h4" gutterBottom>
               Cadastre-se Gratuitamente
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
+            {/* <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography> */}
 
-            <AuthSocial />
+            {/* <AuthSocial /> */}
 
-            <RegisterForm indicationCode={indicationCode} />
+            {indicationCode ? <RegisterForm indicationCode={indicationCode} /> : <RegisterForm />}
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
+              Ao se cadastrar, você aceita todos os&nbsp;
               <Link underline="always" color="text.primary" href="#">
-                Terms of Service
+                Termos de Uso
               </Link>
-              {''}and{''}
+              {''} e {''}
               <Link underline="always" color="text.primary" href="#">
-                Privacy Policy
+                Politicas de Serviços
               </Link>
               .
             </Typography>
 
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
+                Já possui uma conta?{' '}
                 <Link variant="subtitle2" to="/login" component={RouterLink}>
                   Login
                 </Link>
