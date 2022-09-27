@@ -6,13 +6,9 @@ export default class Orders extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
-      table.uuid('user_id').references('id').inTable('users').onDelete('CASCADE').notNullable()
+      table.uuid('user_id').references('id').inTable('users')
       table.integer('value').notNullable()
-      table.enu('status', ['AWAITING_PAYMENT', 'PAYMENT_RECEIVED'], {
-        useNative: true,
-        enumName: 'order_status',
-        existingType: false,
-      })
+      table.string('status',50).notNullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

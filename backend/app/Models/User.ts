@@ -96,13 +96,6 @@ export default class User extends AppBaseModel {
     return `${this.firstName} ${this.lastName}`
   }
 
-  // @computed()
-  // public get age(): number {
-  //   return Math.abs(Math.round(this.birthDay.diffNow('years').years));
-  // }
-  // @belongsTo(()=> Address )
-  // public address: BelongsTo<typeOf Address>
-
   //hooks
   @beforeCreate()
   public static assignUuid(user: User) {
@@ -128,11 +121,4 @@ export default class User extends AppBaseModel {
       indicationCode: `${user.firstName}_${makeCode(6)}`
     })
   }
-
-  // static get traits () {
-  //   return [
-  //     '@provider:Adonis/Acl/HasRole',
-  //     '@provider:Adonis/Acl/HasPermission'
-  //   ]
-  // }
 } 

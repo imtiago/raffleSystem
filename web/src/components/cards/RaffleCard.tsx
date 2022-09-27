@@ -23,7 +23,7 @@ interface ICardProps {
 
 export default function RaffleCard({ raffle }: ICardProps) {
   // export default function RaffleCard() {
-  const { products } = raffle;
+  const { products, ...raflleDetails } = raffle;
   return (
     <Grid2
       container
@@ -53,7 +53,7 @@ export default function RaffleCard({ raffle }: ICardProps) {
       >
         {/* implemnta para varios produtos */}
         {/* <div style={{ backgroundColor: 'red' }}>teste div 1</div> */}
-        <ProductCard product={products[0]} />
+        <ProductCard product={raffle.products[0]} />
       </Grid2>
       
       <Grid2

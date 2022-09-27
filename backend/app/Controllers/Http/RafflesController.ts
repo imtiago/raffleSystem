@@ -64,9 +64,26 @@ export default class RafflesController {
   //   console.log(request.all());
   //   return response.status(200);
   // }
-  // public async find({ request, response }: HttpContextContract) {
+  // public async generateOrder({ request, response }: HttpContextContract) {
   //   Logger.info("A info message");
-  //   console.log(request.all());
+
+
+  //   const { selectedRaffles } = await request.validate(GeneratorOrderValidator);
+  //   const user = auth.user;
+
+  //   let value = 0;
+  //   const raffles = await Raffle.query().whereIn(
+  //     "id",
+  //     selectedRaffles.map((m) => m.id)
+  //   ).preload('tickets')
+  //   console.log(raffles)
+  //   // .preload('tickets',query=>{
+  //   //   query.select('code')
+  //   // });
+
+
+
+  //   // console.log(request.all());
   //   return response.status(200);
   // }
 }

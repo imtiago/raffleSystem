@@ -8,7 +8,7 @@ export default class Wallets extends BaseSchema {
       table.uuid('id').primary()
       table.integer('balance').notNullable()
       table.string('pixKey').nullable()
-      table.uuid('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('user_id').references('id').inTable('users')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

@@ -14,6 +14,8 @@ import { useForm, useFieldArray, useWatch, Control } from 'react-hook-form';
 import { FormProvider } from '../../components/hook-form';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import Swal from 'sweetalert2';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -24,6 +26,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const quantity = 3;
+
+export interface IRaffleSelected {
+  id: string;
+  quantity: number;
+}
 
 interface IRaffleProps {
   raffle: IRaffle;
@@ -37,6 +44,8 @@ type FormValues = {
 export default function FullWidthGrid() {
   // const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const navigate = useNavigate();
+  const { userLogged } = useAuth();
+  const [listRafflesSelected, setListRafflesSelected] = useState<IRaffle[]>([]);
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
@@ -55,15 +64,36 @@ export default function FullWidthGrid() {
     control,
   });
 
+  const getItensLocalHistory = useCallback(() => {
+
+    console.log("estou sendo executada")
+//     remove(index)
+
+// console.log(index)
+// console.log(fields)
+// console.log(raffle)
+
+},[])
+
   // const fetchData = useCallback()
+  const deleteItemLocalHistory = (raffle,index) => {
+
+                                remove(index)
+
+    console.log(index)
+    console.log(fields)
+// console.log(raffle)
+
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const selectedRaffles: string[] = JSON.parse(localStorage.getItem('selectedRaffles') as string);
-        // const list = await api.post('/rafflesIds',{rafflesIds:selectedRaffles});
-        // const selectedRafflesList = list.data.map((s) => {
-          const selectedRafflesList = mook_raffles.map((s) => {
+        const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+        const selectedRafflesIds =  selectedRaffles.map(selectedRaffles => selectedRaffles.id)
+        const list = await api.post('/rafflesIds',{rafflesIds:selectedRafflesIds});
+        const selectedRafflesList = list.data.map((s) => {
+          // const selectedRafflesList = mook_raffles.map((s) => {
           return {
             raffle: s,
             quantity: 1,
@@ -80,24 +110,32 @@ export default function FullWidthGrid() {
 
   const onSubmit = async (data: FormValues) => {
     // console.log(data)
-    const seectedRafflesToSendFormat = {
-      selectedRaffles: data.selectedRaffles.map((r) => {
-        return {
-          id: r.raffle.id,
-          quantity,
-        };
-      }),
-    };
-    try {
-      const response = await api.post('/orders', seectedRafflesToSendFormat);
-      console.log(response);
-    } catch (error) {
-      alert("você não esta logado, realize o login ou cadastre-se para completar a operação")
-      navigate('/signIn', { replace: true });
-
-      // console.log("ola");
-      // console.log(error);
+    if(!userLogged()){
+      Swal.fire({
+        text: 'Você precisa está logado para realizar essa operação, Realize o login ou cadastre-se para prosseguir',
+        icon: 'warning',
+      })
+      navigate('/signIn');
+      return
     }
+    // const seectedRafflesToSendFormat = {
+    //   selectedRaffles: data.selectedRaffles.map((r) => {
+    //     return {
+    //       id: r.raffle.id,
+    //       quantity,
+    //     };
+    //   }),
+    // };
+    // try {
+    //   const response = await api.post('/orders', seectedRafflesToSendFormat);
+    //   console.log(response);
+    // } catch (error) {
+    //   // alert("você não esta logado, realize o login ou cadastre-se para completar a operação")
+    //   navigate('/signIn', { replace: true });
+
+    //   // console.log("ola");
+    //   // console.log(error);
+    // }
   };
 
   return (
@@ -135,7 +173,9 @@ export default function FullWidthGrid() {
                             })}
                             defaultValue={item.quantity}
                           />
-                          <Button variant="outlined" color="primary" size="small" onClick={() => remove(index)}>
+                          <Button variant="outlined" color="primary" size="small" onClick={() =>
+                            deleteItemLocalHistory(item.raffle,index)
+                          }>
                             Delete
                           </Button>
                         </Stack>

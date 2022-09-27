@@ -37,10 +37,16 @@ export default class Raffle extends AppBaseModel {
   public products: ManyToMany<typeof Product>
 
   @manyToMany(() => Order,{
+    pivotColumns: ['code'],
+    pivotTable: 'tickets'
+  })
+  public tickets: ManyToMany<typeof Order>
+
+  @manyToMany(() => Order,{
     pivotTable: 'raffle_order'
   })
   public orders: ManyToMany<typeof Order>
-  
+
   //hooks
   @beforeCreate()
   public static assignUuidAndStatus(raffle: Raffle) {

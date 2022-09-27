@@ -14,32 +14,33 @@ import { useCallback, useEffect, useState } from 'react';
 
 function Index() {
   const [params] = useSearchParams();
-  const [qntItensCar, setQntItensCar] = useState<number>(0);
+  // const [qntItensCar, setQntItensCar] = useState<number>(0);
 
   // useCallback(() => {
   useEffect(() => {
     // console.log("acessando o use callback")
-    const selectedRafflesString = localStorage.getItem('selectedRaffles');
-    if (!selectedRafflesString) 
-    localStorage.setItem('selectedRaffles',JSON.stringify([]));
-    else{
-      const selectedRaffles = JSON.parse(selectedRafflesString)
-      if(selectedRaffles.length !== qntItensCar) {
-        setQntItensCar(selectedRaffles.length)
-      }
-    }
 
+    const selectedRafflesString = sessionStorage.getItem('selectedRaffles');
+    if (!selectedRafflesString) 
+    sessionStorage.setItem('selectedRaffles',JSON.stringify([]));
+    // else{
+    //   const selectedRaffles = JSON.parse(selectedRafflesString)
+    //   if(selectedRaffles.length !== qntItensCar) {
+    //     setQntItensCar(selectedRaffles.length)
+    //   }
+    // }
 
     if(params.get("indicationCode")){
       const indicationCode = params.get("indicationCode") as string;
-      localStorage.setItem('indicationCode', indicationCode);
+      sessionStorage.setItem('indicationCode', indicationCode);
+      // localStorage.setItem('indicationCode', indicationCode);
     }
   },[])
 
 
   return (
     <>
-      <AppAppBar qntItensCar={qntItensCar}/>
+      <AppAppBar/>
       <RaffleSession/>
       {/* <ProductHero /> */}
       {/* <ProductValues /> */}

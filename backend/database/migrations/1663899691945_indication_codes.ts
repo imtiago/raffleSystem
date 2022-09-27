@@ -9,7 +9,7 @@ export default class IndicationCodes extends BaseSchema {
       table.string('indication_code_received',50).nullable()
       table.string('indication_code',50).notNullable()
       table.string('qr_code').nullable()
-      table.uuid('user_id').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('user_id').references('id').inTable('users')
     })
   }
 

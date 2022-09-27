@@ -17,19 +17,19 @@ export default function CardSlider({ raffles }: CardSliderProps) {
     draggable: raffles.length >= 1,
     loop: raffles.length >= 1,
     breakpoints: {
-      300: {
-        slidesPerView: 1,
-        navigation: false,
-        slidesPerGroup: 1,
-      },
-      800: {
-        slidesPerView: raffles.length < 1 ? raffles.length : 1,
-        slidesPerGroup: raffles.length < 1 ? raffles.length : 1,
-      },
-      1200: {
-        slidesPerView: raffles.length < 1 ? raffles.length : 1,
-        slidesPerGroup: raffles.length < 1 ? raffles.length : 1,
-      },
+      // 300: {
+      //   slidesPerView: 1,
+      //   navigation: false,
+      //   slidesPerGroup: 1,
+      // },
+      // 800: {
+      //   slidesPerView: raffles.length < 1 ? raffles.length : 1,
+      //   slidesPerGroup: raffles.length < 1 ? raffles.length : 1,
+      // },
+      // 1200: {
+      //   slidesPerView: raffles.length < 1 ? raffles.length : 1,
+      //   slidesPerGroup: raffles.length < 1 ? raffles.length : 1,
+      // },
     },
   };
 
@@ -40,18 +40,24 @@ export default function CardSlider({ raffles }: CardSliderProps) {
         height: '100%',
       }}
     >
-      {raffles.length === 1 ? (
+      {raffles.length === 1 ? 
+      (
       //  <div>testando area de visualização</div>
         <RaffleCard raffle={raffles[0]} />
-      ) : (
+      ) 
+      : 
+      (
         <Slider settings={settings} >
           {raffles.map((raffle) => (
             <Slide key={raffle.id}>
+              {/* <div>testando area de visualização</div> */}
               <RaffleCard raffle={raffle}></RaffleCard>
             </Slide>
           ))}
         </Slider>
-      )}
+      ) 
+     
+      }
     </Box>
   );
 }

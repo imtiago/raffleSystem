@@ -39,10 +39,10 @@ export default function Index() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const list = await api.get('/raffles');
+        const list = await api.get('/raffles');
         // console.log(list.data)
-        // setRaffles(list.data);
-        setRaffles(mook_raffles);
+        setRaffles(list.data);
+        // setRaffles(mook_raffles);
       } catch (e) {
         console.log(e);
       }

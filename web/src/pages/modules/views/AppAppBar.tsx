@@ -1,4 +1,4 @@
-import Box from '@mui/material/Box';
+import { Box, Button } from '@mui/material';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
@@ -7,6 +7,7 @@ import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountPopover from '../../../layouts/dashboard/AccountPopover';
+import Checkout from '../../Checkout/Checkout'
 
 const rightLink = {
   fontSize: 16,
@@ -18,7 +19,8 @@ const rightLink = {
 const userLogged = false;
 
 interface IAppAppBarProps {
-  qntItensCar: number;
+  qntItensCar?: number;
+
 }
 // const AppAppBar: React.FC = () => {
 const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
@@ -37,24 +39,18 @@ const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
             {'nome da empresa'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Link color="inherit" variant="h6" underline="none" href="/signIn/" sx={rightLink}>
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={qntItensCar} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            </Link>
+          <Checkout />
             {userLogged ? (
               <AccountPopover />
             ) : (
-              <div>
+              <Box>
                 <Link color="inherit" variant="h6" underline="none" href="/signIn/" sx={rightLink}>
                   {'Login'}
                 </Link>
                 <Link variant="h6" underline="none" href="/signUp/" sx={{ ...rightLink, color: 'secondary.main' }}>
                   {'Registre-se'}
                 </Link>
-              </div>
+              </Box>
             )}
           </Box>
         </Toolbar>

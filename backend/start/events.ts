@@ -16,7 +16,7 @@ Event.on('verified:user', 'User.verifiedUser')
 //events Order
 Event.on('new:payment', 'Order.onPaymentReceived')
 //events Ticket
-Event.on('new:tickets', 'Ticket.onGeneratorTickets')
+Event.on('new:tickets', 'Raffle.onGenerateTickets')
 
 Event.on('sendWhatsapp', 'WhatsApp.sendMessageWhatsapp')
 

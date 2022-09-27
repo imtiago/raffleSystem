@@ -96,7 +96,8 @@ export default function RegisterForm({ indicationCode }: IProps) {
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextFieldMask placeholder="(99) 9 9999-9999" mask="(99) 9 9999-9999" type="tel" name="phone" label="WhatsApp"/>
+          <RHFTextFieldMask placeholder="(99) 9 9999-9999
+          " mask="(99) 9 9999-9999" type="tel" name="phone" label="WhatsApp"/>
           {/* <RHFTextField placeholder="DD9DDDDDDDD" type="tel" name="phone" label="WhatsApp" maxlength='5'/> */}
           <RHFTextField name="indicationCode" label="Codigo de indicação" />
         </Stack>

@@ -10,13 +10,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import CheckoutPage from '../CheckoutPage/CheckoutPage';
+import { Badge } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 // import { RegisterForm } from '../../../sections/auth/register';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -61,7 +64,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 };
 
 export default function CustomizedDialogs() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -72,13 +75,19 @@ export default function CustomizedDialogs() {
 
   return (
     <div>
+      <IconButton size="large" onClick={handleClickOpen} aria-label="show 4 new mails" color="inherit">
+        {/* <Badge badgeContent={qntItensCar} color="error"> */}
+        <Badge badgeContent={5} color="error">
+          <ShoppingCartIcon />
+        </Badge>
+      </IconButton>
       <BootstrapDialog
-      sx={{
-        pt:5,
-        pr:20,
-        pl:20
-      }}
-      fullScreen
+        sx={{
+          pt: 5,
+          pr: 20,
+          pl: 20,
+        }}
+        fullScreen
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}

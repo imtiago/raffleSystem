@@ -3,7 +3,6 @@ import Logger from "@ioc:Adonis/Core/Logger";
 import Order from "App/Models/Order";
 import GeneratorOrderValidator from "App/Validators/order/GeneratorOrderValidator";
 import Raffle from "App/Models/Raffle";
-import User from "App/Models/User";
 import { EnumStatusOrder } from "App/utils/Enums";
 import Event from "@ioc:Adonis/Core/Event";
 
@@ -38,12 +37,12 @@ export default class OrdersController {
         quantity: selected.quantity,
       };
     });
-    // console.log(result);
 
     await order.related("raffles").sync(result);
 
     return response.created(order);
   }
+
   // public async findById({ request, response }: HttpContextContract) {
   //   Logger.info("Find Order By Id");
   //   const { id } = await request.validate(FindOrderByIdValidator);
@@ -74,7 +73,6 @@ export default class OrdersController {
   // }
   public async paymentReceived({ request, response }: HttpContextContract) {
     Logger.info("paymentReceived");
-    // const percents = [7,4,3];
     const { id } = request.params();
 
     const order = await Order.findOrFail(id);

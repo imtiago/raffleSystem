@@ -6,6 +6,8 @@ import { IRaffle } from './RaffleCard';
 import { useState } from 'react';
 import TextField from '../../pages/modules/components/TextField';
 import moment from 'moment';
+import Swal from 'sweetalert2';
+import { IRaffleSelected } from '../../pages/CheckoutPage/CheckoutPage';
 
 export interface IRaffleProps {
   raffle: IRaffle;
@@ -13,28 +15,30 @@ export interface IRaffleProps {
 }
 
 export default function RaffleDetailsCard({ raffle, quantity }: IRaffleProps) {
-  const [change, setChange] = useState<boolean>(false);
+  // const [change, setChange] = useState<boolean>(false);
   const { id, price, completionDate } = raffle;
 
   function addRaffleMyCard(raffle: IRaffle) {
-    console.log('irei adiciona no localstorage');
-    const selectedRaffles: string[] = JSON.parse(localStorage.getItem('selectedRaffles') as string);
+    console.log('irei adiciona no sessionStorage');
+    const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
 
-    if (selectedRaffles.includes(raffle.id)) {
-      alert('item ja adicionado no carrinho');
+    if (selectedRaffles.some(selectedRaffle=>selectedRaffle.id === raffle.id)) {
+      Swal.fire({
+        title: 'Atenção!',
+        text: 'Este item já esta no seu Carrinho!',
+        icon: 'warning',
+      })
       return;
     }
-    // for(let i = 0; i < selectedRaffles.length; i++){
-    //   if(selectedRaffles[i] === raffle.id){
-    //     alert('item ja adicionado no carrinho')
-    //     return
-    //   }
-    // }
-    selectedRaffles.push(id);
-    localStorage.setItem('selectedRaffles', JSON.stringify(selectedRaffles));
+    selectedRaffles.push({id,quantity: 1});
+    sessionStorage.setItem('selectedRaffles', JSON.stringify(selectedRaffles));
 
-    alert('adicionado com sucesso');
-    setChange(!change);
+    Swal.fire({
+      title: 'Adicionado!',
+      text: 'Adicionado com Sucesso!',
+      icon: 'success',
+    })
+    // setChange(!change);
   }
 
   return (

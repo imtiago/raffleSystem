@@ -13,13 +13,13 @@ export default class User {
     // console.log(url)
     // new VerifyEmail(data.user, url).preview();
 
-    // // send mensage to user whatsapp
-    // const welcomeMensagem = `Olá ${user.fullName} \n Eu sou assistente virtual da empresa. Gostariamos de lhe dar as boas vindas e dizer que estamos muito felizes por voce está aqui conosco.`
-    // await whats.sendText(user.phone,welcomeMensagem)
+    // send mensage to user whatsapp
+    const welcomeMensagem = `Olá ${user.fullName} \n Eu sou assistente virtual da empresa. Gostariamos de lhe dar as boas vindas e dizer que estamos muito felizes por voce está aqui conosco.`
+    await whats.sendText(user.phone,welcomeMensagem)
 
-    // console.log(user.phone)
-    // await whats.sendLink(data.user.phone,url,"Confirme sua conta através do link!")
-    // console.log("mensage enviada com sucesso")
+    console.log(user.phone)
+    await whats.sendLink(data.user.phone,url,"Confirme sua conta através do link!")
+    console.log("mensage enviada com sucesso")
   }
   public async onResetPassword(user) {
     console.log(user);
@@ -37,8 +37,8 @@ export default class User {
 
     //send email welcome!!
 
-    // // send mensage to user whatsapp
-    // const msn = `Sua Verificação de conta foi Relizada com sucesso, Bem vindo a nossa plataforma e Boa Sorte!!`
-    // await whats.sendText(user.phone,msn)
+    // send mensage to user whatsapp
+    const msn = `Sua Verificação de conta foi Relizada com sucesso, Bem vindo a nossa plataforma e Boa Sorte!!`
+    await whats.sendText(user.phone,msn)
   }
 }
