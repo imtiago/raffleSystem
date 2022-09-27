@@ -6,18 +6,8 @@ import CardProduct, { IImage } from './ProductCardImage';
 import RaffleDetailsCard from './RaffleDetailsCard';
 import ProductDetailsCard from './ProductDetailsCard';
 import Carrocel from '../carrousels/CardCarrousel';
-import ProductCard from './Product/ProductCard';
+import ProductCard, { IProduct } from './Product/ProductCard';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
-
-export interface IProduct {
-  id: string;
-  name: string;
-  price: number;
-  isNew: boolean;
-  url?: string;
-  details: string;
-  images: IImage[];
-}
 
 export interface IRaffle {
   id: string;
@@ -33,23 +23,46 @@ interface ICardProps {
 
 export default function RaffleCard({ raffle }: ICardProps) {
   // export default function RaffleCard() {
-  const { price, completionDate, numbersAvailable, products } = raffle;
+  const { products } = raffle;
   return (
-    <Grid2 container spacing={2}
-     sx={{
-      alignItems: 'center',
-      color: 'black'
-    }}
-     >
-      <Grid2 xs={9}>
+    <Grid2
+      container
+      // spacing={2}
+      sx={{
+        alignItems: 'center',
+        width: '98%',
+        height: '98%',
+        color: 'black',
+      }}
+    >
+      <Grid2
+        xs={9}
+        sx={
+          {
+            display: 'flex',
+            // flexDirection: 'row',
+            alignItems: 'center',
+            // justifyContent: 'center',
+            // width: '100%',
+            height: '100%',
+            // color: 'black',
+            // bgcolor: 'black',
+            // width: '100%',
+          }
+        }
+      >
         {/* implemnta para varios produtos */}
-        {/* <div>
-          teste 
-        </div> */}
+        {/* <div style={{ backgroundColor: 'red' }}>teste div 1</div> */}
         <ProductCard product={products[0]} />
       </Grid2>
-      <Grid2 sx={{ height: 800, backgroundColor: 'blue'}} xs={3}>
-        <RaffleDetailsCard completionDate={completionDate} price={price} />
+      
+      <Grid2
+        xs={3}
+        sx={{
+          height: '100%',
+        }}
+      >
+        <RaffleDetailsCard raffle={raffle} />
       </Grid2>
     </Grid2>
   );

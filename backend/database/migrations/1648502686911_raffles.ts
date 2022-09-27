@@ -10,6 +10,12 @@ export default class Raffles extends BaseSchema {
       table.integer('numbers_available').notNullable()
       table.integer('price').notNullable()
       table.string('status').notNullable()
+      
+      // table
+      //   .uuid('order_id')
+      //   .references('orders.id')
+
+
       // table
       // .integer('product_id')
       // .unsigned()

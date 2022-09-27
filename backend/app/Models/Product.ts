@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { beforeCreate, BelongsTo, belongsTo, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { beforeCreate, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Raffle from './Raffle'
 import { v4 as uuidv4 } from 'uuid'
 import AppBaseModel from './AppBaseModel'

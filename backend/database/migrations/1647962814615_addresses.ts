@@ -14,8 +14,7 @@ export default class Addresses extends BaseSchema {
     //   table.string('uf').notNullable()
     //   table.string('complement').nullable()
     //   table
-    //     .integer('user_id')
-    //     .unsigned()
+    //     .uuid('user_id')
     //     .references('users.id')
     //     .onDelete('CASCADE')
       /**

@@ -41,6 +41,11 @@ const navConfig: itemNav[] = [
     icon: getIcon('eva:activity-fill'),
   },
   {
+    title: 'pedidos',
+    path: '/orders',
+    icon: getIcon('eva:activity-fill'),
+  },
+  {
     title: 'pagamentos',
     path: '/blog',
     icon: getIcon('eva:file-text-fill'),

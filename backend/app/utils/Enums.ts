@@ -3,7 +3,7 @@ export interface IStatusProduct {
   id: string;
   label: string;
 }
-export const EnumStatusProduct = {
+export const EnumStatusRaffle = {
   canceled: { status: "CANCELED", label: "cancelada" },
   accomplished: { status: "ACCOMPLISHED", label: "realizada" },
   pending: { status: "PENDING", label: "pendente" },
@@ -13,6 +13,11 @@ export const EnumStatusProduct = {
 export const EnumStatusUser = {
   inactive: { status: "INATIVO", label: "inativo" },
   active: { status: "ATIVO", label: "ativo" },
+};
+
+export const EnumStatusOrder = {
+  AWAITING_PAYMENT: { status: "AWAITING_PAYMENT", label: "PENDENTE" },
+  PAYMENT_RECEIVED: { status: "PAYMENT_RECEIVED", label: "RECEBIDO" },
 };
 
 export const EnumTypeMessage = {

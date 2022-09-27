@@ -37,13 +37,14 @@ export default function CardSlider({ raffles }: CardSliderProps) {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#FFFFFF',
+        height: '100%',
       }}
     >
       {raffles.length === 1 ? (
+      //  <div>testando area de visualização</div>
         <RaffleCard raffle={raffles[0]} />
       ) : (
-        <Slider settings={settings}>
+        <Slider settings={settings} >
           {raffles.map((raffle) => (
             <Slide key={raffle.id}>
               <RaffleCard raffle={raffle}></RaffleCard>

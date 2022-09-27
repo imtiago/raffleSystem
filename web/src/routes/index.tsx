@@ -13,6 +13,8 @@ import DashboardLayout from '../layouts/dashboard';
 // //
 // import Blog from '../pages/Blog';
 import User from '../pages/User';
+import Order from '../pages/Order';
+import ValidateUser from '../pages/ValidateUser';
 import Raffle from '../pages/Raffle/index3';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
@@ -32,10 +34,12 @@ import navConfig from "../layouts/dashboard/NavConfig";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/teste" element={<Teste />} />
-      <Route path="/index" element={<Home />} />
+      {/* <Route path="/teste" element={<Teste />} /> */}
+      {/* <Route path="/index" element={<Home />} /> */}
       <Route path='/signUp' element={<SignUp />} />,
       <Route path="/signIn" element={<SignIn />} />
+      <Route path='/users/:id/token/:validateId' element={<ValidateUser />} />,
+
       {/* <Route
         path= "/teste"
         element={<LogoOnlyLayout />} 
@@ -48,6 +52,10 @@ const AppRoutes = () => {
             path='/dashboard'
             element={<Dashboard />}
           />
+
+          <Route path='/orders' element={<Order />} />,
+
+
           {/* <Route element={<PrivateRoutes roles={[systemRoles.ROLE_ADMIN, systemRoles.ROLE_USER]} />}>, */}
           <Route element={<PrivateRoutes roles={[]} />}>,
             <Route path='/user' element={<User />} />,
@@ -55,6 +63,9 @@ const AppRoutes = () => {
             <Route path='/raffle' element={<Raffle />} />,
             <Route path='/settings' element={<Settings />} />,
           </Route>,
+
+
+
 
           {/* <Route element={<PrivateRoutes roles={[systemRoles.ROLE_ADMIN]} />}>, */}
           <Route element={<PrivateRoutes roles={[]} />}>,

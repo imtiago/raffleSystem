@@ -1,125 +1,96 @@
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// @mui
+import * as React from 'react';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { Card, Link, Container, Typography } from '@mui/material';
-// hooks
-import useResponsive from '../../hooks/useResponsive';
-// components
-import Page from '../../components/Page';
-import Logo from '../../components/Logo';
-// sections
-import { LoginForm } from '../../sections/auth/login';
-import AuthSocial from '../../sections/auth/AuthSocial';
-import {useAuth} from '../../context/AuthContext';
-import { useEffect } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+// import Iconify from '../../Iconify';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import CheckoutPage from '../CheckoutPage/CheckoutPage';
+// import { RegisterForm } from '../../../sections/auth/register';
 
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-// ----------------------------------------------------------------------
-
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    display: 'flex',
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
   },
 }));
 
-const HeaderStyle = styled('header')(({ theme }) => ({
-  top: 0,
-  zIndex: 9,
-  lineHeight: 0,
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  position: 'absolute',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.up('md')]: {
-    alignItems: 'flex-start',
-    padding: theme.spacing(7, 5, 0, 7),
-  },
-}));
+export interface DialogTitleProps {
+  id: string;
+  children?: React.ReactNode;
+  onClose: () => void;
+}
 
-const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '100%',
-  maxWidth: 464,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2),
-}));
-
-const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 480,
-  margin: 'auto',
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  padding: theme.spacing(12, 0),
-}));
-
-// ----------------------------------------------------------------------
-
-export default function Index() {
-  const { userLogged } = useAuth()
-  const navigate = useNavigate();
-
-  const smUp = useResponsive('up', 'sm');
-
-  const mdUp = useResponsive('up', 'md');
-  
-  useEffect(()=>{
-    if(userLogged())
-    navigate('/dashboard', { replace: true });
-  },[])
+const BootstrapDialogTitle = (props: DialogTitleProps) => {
+  const { children, onClose, ...other } = props;
 
   return (
-    <Page title="Login">
-      <RootStyle>
-        <HeaderStyle>
-          <Logo />
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
 
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Ainda Não possui uma conta? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/signUp">
-                Cadastrar-se
-              </Link>
-            </Typography>
-          )}
-        </HeaderStyle>
+export default function CustomizedDialogs() {
+  const [open, setOpen] = React.useState(true);
 
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Olá, Bem Vindo Novamente
-            </Typography>
-            <img src="/static/illustrations/illustration_login.png" alt="login" />
-          </SectionStyle>
-        )}
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-        <Container maxWidth="sm">
-          <ContentStyle>
-            <Typography sx={{ mb: 5 }} align='center' variant="h4" gutterBottom>
-              Faça seu Login
-            </Typography>
-
-            {/* <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography> */}
-
-            {/* <AuthSocial /> */}
-
-            <LoginForm />
-
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Ainda Não possui uma conta? {''}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
-                Cadastrar-se
-                </Link>
-              </Typography>
-            )}
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-    </Page>
+  return (
+    <div>
+      <BootstrapDialog
+      sx={{
+        pt:5,
+        pr:20,
+        pl:20
+      }}
+      fullScreen
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        TransitionComponent={Transition}
+      >
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Checkout
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+          <CheckoutPage />
+        </DialogContent>
+      </BootstrapDialog>
+    </div>
   );
 }

@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,20 +13,19 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
 import api from '../../../services/api';
-import {useAuth} from '../../../context/AuthContext';
-import CustomAlert from '../../../components/Alert'
-
+import { useAuth } from '../../../context/AuthContext';
+import RHFTextFieldMask from '../../../components/hook-form/RHFTextFieldMask';
 
 // ----------------------------------------------------------------------
 
 interface IProps {
-  indicationCode?: string,
+  indicationCode?: string;
 }
-export default function RegisterForm({indicationCode}: IProps) {
-  const { signIn } = useAuth()
+export default function RegisterForm({ indicationCode }: IProps) {
+  const { signIn } = useAuth();
   const navigate = useNavigate();
-  
-  const [openAlert, setOpenAlert] = useState(false);
+
+
   const [showPassword, setShowPassword] = useState(false);
 
   const defaultValues = {
@@ -49,8 +50,8 @@ export default function RegisterForm({indicationCode}: IProps) {
     email: Yup.string().email('Somente endereços de e-mail').required('Email é obrigatório'),
     password: Yup.string().required('Senha é Obrigatória'),
     confirmPassword: Yup.string().when('password', (password, field) =>
-    password ? field.required('Confirmação de senha obrigatório').oneOf([Yup.ref('password')]) : field
-  ),
+      password ? field.required('Confirmação de senha obrigatório').oneOf([Yup.ref('password')]) : field
+    ),
     // confirmPassword: Yup.string().required('Confirmação de senha obrigatório'),
   });
 
@@ -65,20 +66,24 @@ export default function RegisterForm({indicationCode}: IProps) {
     reset,
   } = methods;
 
-  const handleOpen = () => {
-    setOpenAlert(true);
-  };
-
   const onSubmit = async (data) => {
-    try{
-      await api.post('/users/',data)
-      handleOpen();
+    data.phone = data.phone.replace(/[^0-9]/g,'');
+    try {
+      await api.post('/users/', data);
       localStorage.removeItem('indicationCode');
-      reset()
-      // const {email, password} = data;
-      // signIn({email, password})
-    }catch (error){
-      alert("ocorreu um erro")
+      Swal.fire({
+        title: 'Sucesso!',
+        text: 'Usuario Cadastrado com Sucesso!\n Realize a verificação por email, ou pelo WhatsApp',
+        icon: 'success',
+      })
+      reset();
+    } catch (error) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Ocorreu um erro durante o cadastro!',
+        icon: 'error',
+      })
+      // alert('ocorreu um erro');
     }
   };
 
@@ -86,12 +91,13 @@ export default function RegisterForm({indicationCode}: IProps) {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="Primeiro nome" autoFocus/>
+          <RHFTextField name="firstName" label="Primeiro nome" autoFocus />
           <RHFTextField name="lastName" label="Ultimo nome" />
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField type='tel' name="phone" label="WhatsApp" />
+          <RHFTextFieldMask placeholder="(99) 9 9999-9999" mask="(99) 9 9999-9999" type="tel" name="phone" label="WhatsApp"/>
+          {/* <RHFTextField placeholder="DD9DDDDDDDD" type="tel" name="phone" label="WhatsApp" maxlength='5'/> */}
           <RHFTextField name="indicationCode" label="Codigo de indicação" />
         </Stack>
 
@@ -130,9 +136,6 @@ export default function RegisterForm({indicationCode}: IProps) {
           Cadastrar-se
         </LoadingButton>
       </Stack>
-      {
-openAlert &&<CustomAlert />
-      }
     </FormProvider>
   );
 }

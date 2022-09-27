@@ -41,7 +41,7 @@ export default function CardSlider({ images }: CardSliderProps) {
       ) : (
         <Slider settings={settings}>
           {images.map((image) => (
-            <Slide style={{backgroundColor: 'blue' }}>
+            <Slide key={image.id} style={{backgroundColor: 'blue' }}>
               <CardProduct image={image} />
             </Slide>
           ))}

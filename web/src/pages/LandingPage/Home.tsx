@@ -9,34 +9,37 @@ import AppAppBar from '../modules/views/AppAppBar';
 import withRoot from '../modules/withRoot';
 import RaffleSession from '../modules/views/RaffleSession';
 import { useSearchParams } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 
 function Index() {
   const [params] = useSearchParams();
+  const [qntItensCar, setQntItensCar] = useState<number>(0);
 
-  const k = useCallback(() => {
+  // useCallback(() => {
+  useEffect(() => {
+    // console.log("acessando o use callback")
+    const selectedRafflesString = localStorage.getItem('selectedRaffles');
+    if (!selectedRafflesString) 
+    localStorage.setItem('selectedRaffles',JSON.stringify([]));
+    else{
+      const selectedRaffles = JSON.parse(selectedRafflesString)
+      if(selectedRaffles.length !== qntItensCar) {
+        setQntItensCar(selectedRaffles.length)
+      }
+    }
+
+
     if(params.get("indicationCode")){
       const indicationCode = params.get("indicationCode") as string;
       localStorage.setItem('indicationCode', indicationCode);
     }
-    console.log(params.get("indicationCode"))
-  },[]);
-  
-
-  // useEffect(() => {
-  //   if(params.get("indicationCode")){
-  //     const indicationCode = params.get("indicationCode") as string;
-  //     localStorage.setItem('indicationCode', indicationCode);
-  //   }
-  //   console.log(params.get("indicationCode"))
-  // },[])
+  },[])
 
 
-  // const indicationCode = params.get("indicationCode") || ''
   return (
     <>
-      <AppAppBar />
+      <AppAppBar qntItensCar={qntItensCar}/>
       <RaffleSession/>
       {/* <ProductHero /> */}
       {/* <ProductValues /> */}
@@ -50,3 +53,4 @@ function Index() {
 }
 
 export default withRoot(Index);
+// export default Index;

@@ -4,7 +4,7 @@ import Product from './Product'
 import { v4 as uuidv4 } from 'uuid'
 import AppBaseModel from './AppBaseModel'
 import Order from './Order'
-import { EnumStatusProduct } from 'App/utils/Enums'
+import { EnumStatusRaffle } from 'App/utils/Enums'
 
 // export default class Raffle extends BaseModel {
 export default class Raffle extends AppBaseModel {
@@ -45,6 +45,6 @@ export default class Raffle extends AppBaseModel {
   @beforeCreate()
   public static assignUuidAndStatus(raffle: Raffle) {
     raffle.id = uuidv4()
-    raffle.status = EnumStatusProduct.pending.status
+    raffle.status = EnumStatusRaffle.pending.status
   }
 }

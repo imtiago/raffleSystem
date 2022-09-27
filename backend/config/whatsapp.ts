@@ -1,4 +1,4 @@
-import WhatsApp from "App/utils/WhatsApp";
+// import WhatsApp from "App/utils/WhatsApp";
 
-export default new WhatsApp('systemWhatsapp')
-// export default true
+// export default new WhatsApp('systemWhatsapp')
+export default true

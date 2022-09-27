@@ -47,11 +47,11 @@ export const AccountProfile = (props) => {
             color="textSecondary"
             variant="body2"
           >
-            {
+            {/* {
               user?.roles?.map((role: { label: string }) =>
                 role.label
               )?.join('\n')
-            }
+            } */}
           </Typography>
         </Box>
       </CardContent>

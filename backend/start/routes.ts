@@ -32,8 +32,14 @@ Route.get("/teste", async () => {
 
 Route.get("/verifyAccount/:userId/token/:tokenId", "UsersController.verify");
 Route.post("/signIn", "UsersController.signIn");
+Route.post("/rafflesIds", "RafflesController.findIds");
 Route.get("/raffles", "RafflesController.index");
 Route.post("/users", "UsersController.store");
+
+
+Route.get("/orders/:id/paymentReceived", "OrdersController.paymentReceived");
+
+
 
 //Attention!! here you have push all routes with need authentication
 Route.group(() => {

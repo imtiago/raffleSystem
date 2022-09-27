@@ -112,7 +112,7 @@ export default function SignIn() {
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Ainda Não possui uma conta? {''}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
+                <Link variant="subtitle2" component={RouterLink} to="/signUp">
                 Cadastrar-se
                 </Link>
               </Typography>

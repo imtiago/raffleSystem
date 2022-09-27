@@ -1,5 +1,6 @@
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import { EnumStatusRaffle } from "App/utils/Enums";
 
 export default class GeneratorOrderValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -23,13 +24,14 @@ export default class GeneratorOrderValidator {
    *     ])
    *    ```
    */
+  // EnumStatusRaffle
   public schema = schema.create({
     selectedRaffles: schema.array([rules.minLength(1)]).members(
       schema.object().members({
         id: schema.string([
           rules.uuid({ version: 4 }),
           rules.exists({ table: "raffles", column: "id", where: {
-            status: 'active',
+            status: EnumStatusRaffle.pending.status,
           }, }),
         ]),
         quantity: schema.number(),

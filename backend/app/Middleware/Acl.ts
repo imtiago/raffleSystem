@@ -1,5 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Permission from "App/Models/Permission";
+// import Permission from "App/Models/Permission";
 
 export default class Acl {
   public async handle(
@@ -10,7 +10,9 @@ export default class Acl {
     console.log("middleware acl");
     // let can = false;
 
-    // // console.log(permission)
+
+    console.log(auth)
+    console.log(permission)
     // const permissionInstance = await Permission.findByOrFail(
     //   "name",
     //   permission[0]

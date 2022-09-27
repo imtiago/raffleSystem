@@ -16,18 +16,18 @@ interface ICardProps {
 export default function ProductDetailsCard({ product }: ICardProps) {
   const { name, isNew, price, details } = product;
   return (
-    <Stack spacing={1} sx={{bgcolor:'red'}}>
+    <Stack spacing={1} pt={5} pl={2} sx={{ height:'100%'}}>
       <Typography variant="h4" align="center">
         {name}
       </Typography>
       <Typography variant="h5" color="text.secondary">
-        Valor: {price}
+        <strong>Valor:</strong> {price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
       </Typography>
       <Typography variant="h5" color="text.secondary">
-        Estado: {isNew ? 'Produto Novo' : 'Produto Usado'}
+      <strong>Estado:</strong> {isNew ? 'Produto Novo' : 'Produto Usado'}
       </Typography>
       <Typography variant="h5" color="text.secondary">
-        Detalhes: {details}
+      <strong>Detalhes:</strong> {details}
       </Typography>
     </Stack>
   );

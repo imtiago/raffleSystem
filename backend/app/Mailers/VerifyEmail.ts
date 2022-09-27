@@ -1,5 +1,4 @@
 import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
-import CreateUser from 'App/Models/CreateUser';
 import User from 'App/Models/User'
 import ejs from 'ejs'
 import { join } from 'path';
@@ -25,7 +24,7 @@ export default class VerifyEmail extends BaseMailer {
   private systemEmailInformation = env.SMTP_USERNAME as string
   private pathTemplate = join(__dirname,'..','..','resources','views','emails','confirm_account.ejs')
 
-  constructor (private toUser: User | CreateUser, private urlConfirmation : string) {
+  constructor (private toUser: User, private urlConfirmation : string) {
     super()
   }
   public async prepare(message: MessageContract) {

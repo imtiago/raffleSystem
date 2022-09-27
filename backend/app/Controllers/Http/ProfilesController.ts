@@ -9,7 +9,7 @@ export default class ProfilesController {
     try {
       const user = auth.user
       await user?.load((loader) => {
-        loader.load('roles').load('permissions')
+        loader.load('roles').load('permissions').load('wallet')
       })
       return response.ok(user);
     } catch {

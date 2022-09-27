@@ -1,5 +1,4 @@
 import {  BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import { DateTime } from 'luxon'
 import CamelCaseNamingStrategy from 'App/Strategies/CamelCaseNamingStrategy'
 import AppBaseModel from './AppBaseModel'
 import User from './User'

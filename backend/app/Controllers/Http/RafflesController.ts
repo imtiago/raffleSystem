@@ -1,7 +1,8 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Logger from "@ioc:Adonis/Core/Logger";
 import Raffle from "App/Models/Raffle";
-import { EnumStatusProduct } from "App/utils/Enums";
+import { EnumStatusRaffle } from "App/utils/Enums";
+import listRaffleByIdsValidator from "App/Validators/raffle/listRaffleByIdsValidator";
 import StoreRaffleValidator from "App/Validators/raffle/StoreRaffleValidator";
 
 export default class RafflesController {
@@ -27,7 +28,20 @@ export default class RafflesController {
   public async index({ response }: HttpContextContract) {
     Logger.info("index of Raffles");
     const raffles = await Raffle.query()
-      .where("status", EnumStatusProduct.pending.status)
+      .where("status", EnumStatusRaffle.pending.status)
+      .preload("products", (postsQuery) => {
+        postsQuery.preload("images");
+      });
+    return response.ok(raffles);
+  }
+  public async findIds({request, response }: HttpContextContract) {
+    Logger.info("index of list Raffles by Ids");
+    const { rafflesIds } = await request.validate(
+      listRaffleByIdsValidator
+    );
+    const raffles = await Raffle.query()
+      .whereIn('id',rafflesIds)
+      .where("status", EnumStatusRaffle.pending.status)
       .preload("products", (postsQuery) => {
         postsQuery.preload("images");
       });

@@ -50,7 +50,8 @@ const AuthProvider: React.FC = ({ children }) => {
       const token = localStorage.getItem('@PermissionYT:token');
       if (token) {
         try {
-          const response = await api.get('/profile');
+          const response = await api.get('/profiles');
+          console.log("response")
           setUser(response.data);
         } catch {}
       }
@@ -61,16 +62,17 @@ const AuthProvider: React.FC = ({ children }) => {
   const signIn = useCallback(async ({ email, password }: UserData) => {
     const base64encodedData = btoa(email + ':' + password);
 
-    api.defaults.headers['authorization'] = `Basic ${base64encodedData}`;
+    api.defaults.headers['Authorization'] = `Basic ${base64encodedData}`;
     const response = await api.post('/signIn');
     // console.log(response)
 
     const { token } = response.data;
 
     localStorage.setItem('@PermissionYT:token', token);
-    api.defaults.headers['authorization'] = `Bearer ${token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
     setToken({ token } as TokenState);
+    // navigate('/dashboard');
     navigate('/dashboard', { replace: true });
   }, []);
 
@@ -81,7 +83,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
     localStorage.removeItem('@PermissionYT:token');
 
-    delete api.defaults.headers['authorization'];
+    delete api.defaults.headers['Authorization'];
   }, []);
 
   const userLogged = useCallback(() => {

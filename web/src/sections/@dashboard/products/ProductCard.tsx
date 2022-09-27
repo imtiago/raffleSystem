@@ -4,7 +4,7 @@ import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
-import { IProduct } from '../../../utils/interfaces';
+import { IProduct } from '../../../components/cards/Product/ProductCard';
 
 // ----------------------------------------------------------------------
 
@@ -16,12 +16,16 @@ const ProductImgStyle = styled('img')({
   position: 'absolute',
 });
 
-export default function ShopProductCard(product: IProduct) {
+export interface ProductCardProps {
+  product: IProduct;
+}
+
+export default function ShopProductCard({product}: ProductCardProps) {
 const { name, price, isNew, link, images } = product
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-         <ProductImgStyle alt={name} src={images[0] || ''} />
+         <ProductImgStyle alt={name} src={images[0].url || ''} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>

@@ -9,6 +9,7 @@ export default class ProductsController {
     const productData = await request.validate(StoreProductValidator);
     const product = await Product.create(productData);
     if (!product) return response.created(product);
+    return response.created(product);
   }
 
   public async index({ response }: HttpContextContract) {

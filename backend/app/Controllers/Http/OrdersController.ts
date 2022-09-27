@@ -1,16 +1,11 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Logger from "@ioc:Adonis/Core/Logger";
 import Order from "App/Models/Order";
-import CreateOrder from "App/Models/CreateOrder";
 import GeneratorOrderValidator from "App/Validators/order/GeneratorOrderValidator";
-import VerifyOrderValidator from "App/Validators/VerifyOrderValidator";
-import FindOrderByIdValidator from "App/Validators/FindOrderByIdValidator";
-import Event from "@ioc:Adonis/Core/Event";
 import Raffle from "App/Models/Raffle";
-import Orders from "Database/migrations/1663872656258_orders";
-import Database from "@ioc:Adonis/Lucid/Database";
-
-//associate
+import User from "App/Models/User";
+import { EnumStatusOrder } from "App/utils/Enums";
+import Event from "@ioc:Adonis/Core/Event";
 
 export default class OrdersController {
   public async generate({ auth, request, response }: HttpContextContract) {
@@ -34,7 +29,6 @@ export default class OrdersController {
     const data = {
       userId: user?.id,
       value,
-      status: "AWAITING_PAYMENT",
     };
     const order = await Order.create(data);
 
@@ -44,7 +38,7 @@ export default class OrdersController {
         quantity: selected.quantity,
       };
     });
-    console.log(result);
+    // console.log(result);
 
     await order.related("raffles").sync(result);
 
@@ -58,7 +52,9 @@ export default class OrdersController {
   // }
   public async index({ response }: HttpContextContract) {
     Logger.info("index of Orders");
-    const Orders = await Order.all();
+    const Orders = await Order.query()
+      // .where("status", EnumStatusRaffle.pending.status)
+      .preload("user");
     return response.ok(Orders);
   }
   // public async update({ request, response }: HttpContextContract) {
@@ -76,4 +72,20 @@ export default class OrdersController {
   //   console.log(request.all());
   //   return response.status(200);
   // }
+  public async paymentReceived({ request, response }: HttpContextContract) {
+    Logger.info("paymentReceived");
+    // const percents = [7,4,3];
+    const { id } = request.params();
+
+    const order = await Order.findOrFail(id);
+    if (order.status === EnumStatusOrder.PAYMENT_RECEIVED.status)
+      return response.status(409);
+
+    order.status = EnumStatusOrder.PAYMENT_RECEIVED.status;
+    await order.save();
+
+    Event.emit("new:payment", order);
+
+    return response.status(200);
+  }
 }

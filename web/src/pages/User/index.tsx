@@ -36,7 +36,7 @@ import RegisterUserModal from '../../components/Modals/RegisterUser';
 const TABLE_HEAD = [
   { id: 'name', label: 'Nome', alignRight: false },
   { id: 'email', label: 'email', alignRight: false },
-  { id: 'role', label: 'Perfil', alignRight: false },
+  // { id: 'role', label: 'Perfil', alignRight: false },
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'phone', label: 'Whatsapp', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
@@ -200,7 +200,7 @@ export default function index() {
                         </TableCell>
                         <TableCell align="left">{email}</TableCell>
                         {/* <TableCell align="left">{role}</TableCell> */}
-                        <TableCell align="left">{'Yes'}</TableCell>
+                        {/* <TableCell align="left">{'Yes'}</TableCell> */}
                         <TableCell align="left">{phone}</TableCell>
                         <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>

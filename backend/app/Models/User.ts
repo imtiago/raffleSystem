@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { afterCreate, afterSave, beforeCreate, beforeSave, column, computed, HasMany, hasMany, HasOne, hasOne, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import { afterCreate, beforeCreate, beforeSave, column, computed, HasMany, hasMany, HasOne, hasOne, ManyToMany, manyToMany} from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { v4 as uuidv4 } from 'uuid'
 import Role from './Role'
@@ -10,6 +10,7 @@ import Order from './Order'
 import IndicationCode from './IndicationCode'
 import makeCode from 'App/utils/RandomCode'
 import { EnumStatusUser } from 'App/utils/Enums'
+import Wallet from './Wallet'
 
 // import Address from './Address'
 
@@ -83,6 +84,9 @@ export default class User extends AppBaseModel {
   @hasMany(() => Order)
   public orders: HasMany<typeof Order>
 
+  @hasOne(() => Wallet)
+  public wallet: HasOne<typeof Wallet>
+
   @hasOne(() => IndicationCode)
   public indicationCode: HasOne<typeof IndicationCode>
 
@@ -117,6 +121,9 @@ export default class User extends AppBaseModel {
   public static async assignIndicationCode (user: User) {
     const role = await Role.findByOrFail("name", "ROLE_ASSOCIATE");
     await user.related("roles").saveMany([role]);
+    await user.related('wallet').create({
+      // balance: `${user.firstName}_${makeCode(6)}`
+    })
     await user.related('indicationCode').create({
       indicationCode: `${user.firstName}_${makeCode(6)}`
     })

@@ -9,10 +9,11 @@ import Carrocel from '../../carrousels/CardCarrousel';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 export interface IProduct {
+  id: string;
   name: string;
   price: number;
   isNew: boolean;
-  url: string;
+  link?: string;
   details: string;
   images: IImage[];
 }
@@ -37,15 +38,28 @@ export default function ProductCard({ product }: ICardProps) {
       spacing={2}
       sx={{
         alignItems: 'center',
+        width: '100%',
         height: '100%',
-        bgcolor: 'orange'
       }}
     >
-      <Grid2 xs={9}>
+      <Grid2
+        xs={9}
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          height: '100%',
+        }}
+      >
         {/* implemnta para varios produtos */}
         <Carrocel images={images} />
       </Grid2>
-      <Grid2 sx={{bgcolor:'yellow'}} xs={3}>
+      <Grid2
+        xs={3}
+        sx={{
+          height: '100%',
+        }}
+      >
         <ProductDetailsCard product={rest} />
       </Grid2>
     </Grid2>

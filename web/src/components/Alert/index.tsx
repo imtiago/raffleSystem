@@ -11,8 +11,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 const msn = 'operação realizada com Sucesso';
-const type = 'error';
-const label = 'Falha';
+const type = 'sucess';
+const label = 'Cadastro';
 
 export default function CustomizedSnackbars() {
   const [open, setOpen] = React.useState(true);

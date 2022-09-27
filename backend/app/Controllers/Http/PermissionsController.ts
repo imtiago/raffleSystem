@@ -4,7 +4,6 @@ import Permission from "App/Models/Permission";
 import StorePermissionValidator from "App/Validators/permission/StorePermissionValidator";
 import FindPermissionByIdValidator from "App/Validators/permission/FindPermissionByIdValidator";
 import UpdatePermissionValidator from "App/Validators/permission/UpdatePermissionValidator";
-import Role from "App/Models/Role";
 
 export default class PermissionsController {
   public async store({ request, response }: HttpContextContract) {

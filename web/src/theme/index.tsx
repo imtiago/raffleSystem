@@ -23,8 +23,8 @@ export default function ThemeProvider({ children }:IThemeProvider) {
     () => ({
       palette,
       shape: { borderRadius: 8 },
-      // typography,
-      // shadows,
+      typography,
+      shadows,
       customShadows,
     }),
     []

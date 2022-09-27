@@ -8,51 +8,54 @@ interface RoutesPropsData extends RouteProps {
 }
 
 const PrivateRoutes = ({ roles }: RoutesPropsData) => {
-  // const [permissions, setPermissions] = useState(null);
-  const { user, userLogged } = useAuth();
-  // const [permission, setPermission] = useState(
-  //   function loadRoles() {
-  //       const { user: u } = useAuth();
-  //       const { roles } = u
-  //       const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
-  //       return findRole
-  //       // console.log(findRole)
-  //       // setPermission(findRole);
-  //     }
-  // );
-    // const checkPermission = ():boolean => {
-    //     // const { user: u } = useAuth();
-    //     console.log("roles")
-    //     const { roles } = user
-    //     console.log(roles)
-    //     const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
-    //     return findRole
-    //     // console.log(findRole)
-    //     // setPermission(findRole);
-    //   }
+  // // const [permissions, setPermissions] = useState(null);
   
-  // const permission = ()=> user?.roles.some((r: Role) =>role?.split(",").includes(r.name));
-  const permission = roles? checkRole(roles,user.roles): false;
+  // const { user, userLogged } = useAuth();
 
-  // useEffect(() => {
-  //   async function loadRoles() {
-  //     const { roles } = user
-  //     const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
-  //     console.log(findRole)
-  //     setPermission(findRole);
-  //   }
-  //   loadRoles();
-  // }, []);
+  // // const [permission, setPermission] = useState(
+  // //   function loadRoles() {
+  // //       const { user: u } = useAuth();
+  // //       const { roles } = u
+  // //       const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
+  // //       return findRole
+  // //       // console.log(findRole)
+  // //       // setPermission(findRole);
+  // //     }
+  // // );
+  //   // const checkPermission = ():boolean => {
+  //   //     // const { user: u } = useAuth();
+  //   //     console.log("roles")
+  //   //     const { roles } = user
+  //   //     console.log(roles)
+  //   //     const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
+  //   //     return findRole
+  //   //     // console.log(findRole)
+  //   //     // setPermission(findRole);
+  //   //   }
+  
+  // // const permission = ()=> user?.roles.some((r: Role) =>role?.split(",").includes(r.name));
+  // const permission = roles? checkRole(roles,user.roles): false;
 
-  // if (!userLogged()) 
-  //   return <Navigate to="/signIn" />
+  // // useEffect(() => {
+  // //   async function loadRoles() {
+  // //     const { roles } = user
+  // //     const findRole = roles.some((r: Role) =>role?.split(",").includes(r.name));
+  // //     console.log(findRole)
+  // //     setPermission(findRole);
+  // //   }
+  // //   loadRoles();
+  // // }, []);
 
-  if (!roles || roles.length === 0) 
+  // // if (!userLogged()) 
+  // //   return <Navigate to="/signIn" />
+
+  // if (!roles || roles.length === 0) 
+  //   return <Outlet />
+    
+  //   // console.log(permission)
+    
+  //   return permission? <Outlet /> : <Navigate to="/dashboard" />
     return <Outlet />
-
-  // console.log(permission)
-  
-  return permission? <Outlet /> : <Navigate to="/dashboard" />
 };
 
 export default PrivateRoutes;

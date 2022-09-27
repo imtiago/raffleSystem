@@ -1,14 +1,14 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Logger from "@ioc:Adonis/Core/Logger";
 import User from "App/Models/User";
-import CreateUser from "App/Models/CreateUser";
 import StoreUserValidator from "App/Validators/StoreUserValidator";
-import VerifyUserValidator from "App/Validators/VerifyUserValidator";
+// import VerifyUserValidator from "App/Validators/VerifyUserValidator";
 import FindUserByIdValidator from "App/Validators/FindUserByIdValidator";
 import Event from "@ioc:Adonis/Core/Event";
 import Database from "@ioc:Adonis/Lucid/Database";
 import DeleteUserValidator from "App/Validators/user/DeleteUserValidator";
 import IndicationCode from "App/Models/IndicationCode";
+import { EnumStatusUser } from "App/utils/Enums";
 
 //associate
 
@@ -23,7 +23,7 @@ export default class UsersController {
           .toString()
           .split(":");
         const user = await auth.use("api").verifyCredentials(email, password);
-        if (user.status === "PENDENTE")
+        if (user.status === EnumStatusUser.inactive.status)
           return response.unauthorized("confirm your account");
 
         const token = await auth.use("api").generate(user);
@@ -46,23 +46,21 @@ export default class UsersController {
     const { userId, tokenId } = request.params();
     // console.log(userId, tokenId);
 
-    const confirmCredentials = await Database.from("api_tokens") // 👈 gives an instance of select query builder
+    try{
+
+      const confirmCredentials = await Database.from("api_tokens") // 👈 gives an instance of select query builder
       .select("*")
       .where("user_id", userId)
       .where("token", tokenId)
       .first();
-
-    if (confirmCredentials) {
-      await Event.emit("verified:user", userId);
-
-      // //gerar  um usuario ativo e com tudo funcionando
-      // const user = await User.findOrFail(userId);
-      // user.status = 'ATIVO'
-      // await user.related('skills').sync([1, 2, 3])
-      // const data = {
-
-      // }
-    }
+      
+      if (confirmCredentials) {
+        await Event.emit("verified:user", userId);
+        }
+      }catch (err) {
+        // Logger.error(err);
+        return response.conflict();
+      }
     return response.ok("conta verificada com sucesso!");
   }
   public async store({ auth, request, response }: HttpContextContract) {

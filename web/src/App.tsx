@@ -8,6 +8,8 @@ import ThemeProvider from './theme';
 import ScrollToTop from './components/ScrollToTop';
 import { BaseOptionChartStyle } from './components/chart/BaseOptionChart';
 
+import Checkout from './pages/Checkout/Checkout'
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage'
 import Home from './pages/LandingPage/Home'
 
 function App() {
@@ -15,15 +17,14 @@ function App() {
     <HelmetProvider>
       <BrowserRouter>
         <ThemeProvider>
-        <Home/>
+          {/* <Checkout /> */}
+          {/* <CheckoutPage /> */}
+          {/* <Home /> */}
           <ScrollToTop />
-    {/* <div>
-      ok
-    </div> */}
-          {/* <BaseOptionChartStyle />
+          <BaseOptionChartStyle />
           <AuthProvider>
             <Routes />
-          </AuthProvider> */}
+          </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
     </HelmetProvider>
