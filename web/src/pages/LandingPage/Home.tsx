@@ -40,7 +40,7 @@ function Index() {
 
   return (
     <>
-      {/* <AppAppBar/> */}
+      <AppAppBar/>
       <RaffleSession/>
       {/* <ProductHero /> */}
       {/* <ProductValues /> */}

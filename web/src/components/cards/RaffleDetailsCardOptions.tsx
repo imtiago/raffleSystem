@@ -49,7 +49,7 @@ export default function RaffleDetailsCardOptions({ raffle }: IRaffleProps) {
 
   return (
     <Stack spacing={1}>
-      <Button variant="contained" color="primary" onClick={() => addRaffleMyCard(raffle)}>
+      <Button variant="contained" color="primary"  onClick={() => addRaffleMyCard(raffle)}>
         Participar
       </Button>
     </Stack>

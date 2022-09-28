@@ -16,11 +16,10 @@ export default function CardSlider({ raffles }: CardSliderProps) {
     },
     draggable: raffles.length >= 1,
     loop: raffles.length > 1,
-    autoplay: {
-      delay: 20000,
+    autoplay:{
+      delay: 5000,
       // disableOnInteraction: false,
     },
-
     breakpoints: {
       // 300: {
       //   slidesPerView: 1,
@@ -43,6 +42,7 @@ export default function CardSlider({ raffles }: CardSliderProps) {
     <Slider settings={settings}>
       {raffles.map((raffle) => (
         <Slide key={raffle.id}>
+          {/* <div>teste</div> */}
           <RaffleCard raffle={raffle} />
         </Slide>
       ))}

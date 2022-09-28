@@ -28,11 +28,10 @@ export default function ContentProductCard({ products }: ICardProps) {
   return (
     <Grid2
       container
-      spacing={2}
       sx={{
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
+        // alignItems: 'center',
+        // width: '100%',
+        // height: '100%',
         // borderRadius: '50%',
       }}
     >
@@ -50,12 +49,15 @@ export default function ContentProductCard({ products }: ICardProps) {
       <Grid2
         xs={4}
         sx={{
-          height: '100%',
+          // height: '100%',
+          // backgroundColor: 'yellow',
+          // borderRadius: '50%',
+          // marginLeft: '1px',
         }}
       >
         <Stack>
           {products.map((product) => {
-            return <ProductDetailsCard product={product} />;
+            return <ProductDetailsCard key={product.id} product={product} />;
           })}
         </Stack>
       </Grid2>

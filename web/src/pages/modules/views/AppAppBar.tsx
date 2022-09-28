@@ -35,7 +35,7 @@ const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
             // href="/"
             sx={{ fontSize: 24 }}
           >
-            {'nome da empresa'}
+            {'Acredite você tambem'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
           {/* <IconButton size="large" onClick={()=>console.log()} aria-label="show 4 new mails" color="inherit">

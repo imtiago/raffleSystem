@@ -32,9 +32,9 @@ export default function RaffleCard({ raffle }: ICardProps) {
       container
       // spacing={2}
       sx={{
-        // alignItems: 'center',
-        // width: '98%',
-        // height: '98%',
+        alignItems: 'center',
+        width: '98%',
+        height: '100%',
         // color: 'black',
         borderRadius: '10px',
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -44,6 +44,7 @@ export default function RaffleCard({ raffle }: ICardProps) {
         xs={9}
         sx={
           {
+            // borderRadius: '50%',
             // display: 'flex',
             // alignItems: 'center',
             // height: '100%',
@@ -52,27 +53,24 @@ export default function RaffleCard({ raffle }: ICardProps) {
         }
       >
         <ContentProductCard products={raffle.products} />
-        {/* <ProductCard product={raffle.products[0]} /> */}
       </Grid2>
       
       <Grid2
         xs={3}
         sx={{
         //   // flex: 1,
-          height: '100%',
+          // height: '100%',
+          // bgcolor: 'secondary.main',
           // bgcolor: 'red',
-        //   display: 'flex',
-        //   alignItems: 'space-between',
-        //   direction: 'column',
+          // display: 'flex',
+          // alignItems: 'space-between',
+          // direction: 'column',
         //   // direction: 'c',
         //   // justifyContent: 'center',
-        //   // justifyContent: 'space-between',
-        //   // p: 5,
+          // justifyContent: 'space-between',
+          p: 5,
         }}
       >
-        <div>
-          fhkjdshfkj  
-        </div>
         {/* <Box
         sx={{
           // flex: 1,
@@ -86,11 +84,11 @@ export default function RaffleCard({ raffle }: ICardProps) {
           justifyContent: 'space-between',
           // p: 5,
         }}
-        >
+        > */}
 
         <RaffleDetailsCard raffle={raffle} />
         <RaffleDetailsCardOptions raffle={raffle} />
-        </Box> */}
+        {/* </Box> */}
       </Grid2>
     </Grid2>
   );

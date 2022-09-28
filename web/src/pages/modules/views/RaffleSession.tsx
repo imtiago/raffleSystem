@@ -9,12 +9,13 @@ import { IRaffle } from '../../../components/cards/RaffleCard';
 import mook_raffles from '../../../_mock/raffles';
 
 const RaffleSessionLayoutRoot = styled('section')(({ theme }) => ({
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
+  // left: 0,
+  // right: 0,
+  // top: 0,
+  // bottom: 0,
   backgroundColor: 'gray',
   color: theme.palette.common.white,
+  // position: 'relative',
   position: 'relative',
   display: 'flex',
   justifyContent: 'center',
@@ -40,8 +41,8 @@ export default function Index() {
       try {
         const list = await api.get('/raffles');
         // console.log(list.data)
-        // setRaffles(list.data);
-        setRaffles(mook_raffles);
+        setRaffles(list.data);
+        // setRaffles(mook_raffles);
       } catch (e) {
         console.log(e);
       }
