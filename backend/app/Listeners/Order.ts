@@ -40,7 +40,7 @@ export default class Order {
     // // const url = `https://208b-2804-1530-104-a0c2-6d93-685a-c433-c5e8.sa.ngrok.io/verifyAccount/${data.user?.id}/token/${data.token.tokenHash}`;
     // new VerifyEmail(data.user, url).preview();
 
-    // // send mensage to user whatsapp
+    // send mensage to user whatsapp
     const paymentReceivedMensagem = `Olá ${userOrder.fullName}\n Recebemos seu pagamento no valor de ${value}.`
     await whats.sendText(userOrder.phone,paymentReceivedMensagem)
     console.log("mensage enviada com sucesso")

@@ -8,7 +8,6 @@ import RafflesCarrocel from '../../../components/carrousels/RafflesCarrousel';
 import { IRaffle } from '../../../components/cards/RaffleCard';
 import mook_raffles from '../../../_mock/raffles';
 
-
 const RaffleSessionLayoutRoot = styled('section')(({ theme }) => ({
   left: 0,
   right: 0,
@@ -41,8 +40,8 @@ export default function Index() {
       try {
         const list = await api.get('/raffles');
         // console.log(list.data)
-        setRaffles(list.data);
-        // setRaffles(mook_raffles);
+        // setRaffles(list.data);
+        setRaffles(mook_raffles);
       } catch (e) {
         console.log(e);
       }
@@ -52,18 +51,7 @@ export default function Index() {
 
   return (
     <RaffleSessionLayoutRoot>
-      <Box
-      sx={{
-        // mt: 3,
-        // ml: 1,
-        // mb: 14,
-        // zIndex: 1,
-        width: '90%',
-        height: '85%',
-        bgcolor: 'white'
-      }}>
-        <RafflesCarrocel raffles={raffles} />
-          </Box>
+      <RafflesCarrocel raffles={raffles} />
     </RaffleSessionLayoutRoot>
   );
 }

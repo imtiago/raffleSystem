@@ -7,7 +7,7 @@ import mook_raffles from '../../_mock/raffles';
 import { useCallback, useEffect, useState } from 'react';
 import { IRaffle } from '../../components/cards/RaffleCard';
 import RaffleDetailsCard from '../../components/cards/RaffleDetailsCard';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, TextField } from '@mui/material';
 import Page from '../../components/Page';
 import Typography from '../../theme/overrides/Typography';
 import { useForm, useFieldArray, useWatch, Control } from 'react-hook-form';
@@ -25,8 +25,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const quantity = 3;
-
 export interface IRaffleSelected {
   id: string;
   quantity: number;
@@ -36,71 +34,75 @@ interface IRaffleProps {
   raffle: IRaffle;
   quantity: number;
 }
-
-type FormValues = {
-  selectedRaffles: IRaffleProps[];
-};
+interface IListRafflesSelected extends IRaffle {
+  quantity: number;
+}
 
 export default function FullWidthGrid() {
   // const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const navigate = useNavigate();
   const { userLogged } = useAuth();
-  const [listRafflesSelected, setListRafflesSelected] = useState<IRaffle[]>([]);
-
-  const methods = useForm<FormValues>({
-    mode: 'onBlur',
-  });
-
-  const {
-    register,
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = methods;
-
-  const { fields, remove } = useFieldArray({
-    name: 'selectedRaffles',
-    control,
-  });
+  const [listRafflesSelected, setListRafflesSelected] = useState<IListRafflesSelected[]>([]);
+  const [rafflesSelected, setRafflesSelected] = useState<IRaffleSelected[]>(
+    () => JSON.parse(sessionStorage.getItem('selectedRaffles') as string) as IRaffleSelected[]
+  );
 
   const getItensLocalHistory = useCallback(() => {
+    console.log('estou sendo executada');
+    //     remove(index)
 
-    console.log("estou sendo executada")
-//     remove(index)
-
-// console.log(index)
-// console.log(fields)
-// console.log(raffle)
-
-},[])
+    // console.log(index)
+    // console.log(fields)
+    // console.log(raffle)
+  }, []);
 
   // const fetchData = useCallback()
-  const deleteItemLocalHistory = (raffle,index) => {
+  const deleteItemLocalHistory = (raffle) => {
+    const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+    const newSelectedRaffles = selectedRaffles.filter((selectedRaffle) => selectedRaffle.id !== raffle.id);
+    const newListRafflesSelected = listRafflesSelected.filter((selectedRaffle) => selectedRaffle.id !== raffle.id);
+    sessionStorage.setItem('selectedRaffles', JSON.stringify(newSelectedRaffles));
+    setListRafflesSelected(newListRafflesSelected);
+  };
 
-                                remove(index)
+  const updateQuantityRaffle = (event, raffle) => {
+    const value = event.target.value;
+    if (value.length > 0) {
+      const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+      const index = selectedRaffles.findIndex((selectedRaffle) => selectedRaffle.id === raffle.id);
+      selectedRaffles[index].quantity = parseInt(value);
 
-    console.log(index)
-    console.log(fields)
-// console.log(raffle)
+      console.log(selectedRaffles);
+      sessionStorage.setItem('selectedRaffles', JSON.stringify(selectedRaffles));
+    }
+    console.log(event.target.value.length);
+    // console.log(raffle)
 
-  }
+    // const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+    // const newSelectedRaffles = selectedRaffles.filter(selectedRaffle => selectedRaffle.id !== raffle.id)
+    // const newListRafflesSelected = listRafflesSelected.filter(selectedRaffle => selectedRaffle.id !== raffle.id)
+    // sessionStorage.setItem('selectedRaffles',JSON.stringify(newSelectedRaffles));
+    // setListRafflesSelected(newListRafflesSelected)
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-        const selectedRafflesIds =  selectedRaffles.map(selectedRaffles => selectedRaffles.id)
-        const list = await api.post('/rafflesIds',{rafflesIds:selectedRafflesIds});
-        const selectedRafflesList = list.data.map((s) => {
-          // const selectedRafflesList = mook_raffles.map((s) => {
+        // const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+
+        // console.log(rafflesSelected)
+
+        const selectedRafflesIds = rafflesSelected.map((selectedRaffle) => selectedRaffle.id);
+        // const t = rafflesSelected.
+        // console.log(rafflesSelected.)
+        const list = await api.post('/rafflesIds', { rafflesIds: selectedRafflesIds });
+        const listFormated = list.data.map((d) => {
           return {
-            raffle: s,
-            quantity: 1,
+            ...d,
+            ...rafflesSelected.find((r) => r.id === d.id),
           };
         });
-        // setRaffles(mook_raffles);
-        reset({ selectedRaffles: selectedRafflesList });
+        setListRafflesSelected(listFormated);
       } catch (e) {
         console.log(e);
       }
@@ -108,43 +110,41 @@ export default function FullWidthGrid() {
     fetchData();
   }, []);
 
-  const onSubmit = async (data: FormValues) => {
-    // console.log(data)
-    if(!userLogged()){
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!userLogged()) {
       Swal.fire({
         text: 'Você precisa está logado para realizar essa operação, Realize o login ou cadastre-se para prosseguir',
         icon: 'warning',
-      })
+      });
       navigate('/signIn');
-      return
+      return;
     }
-    // const seectedRafflesToSendFormat = {
-    //   selectedRaffles: data.selectedRaffles.map((r) => {
-    //     return {
-    //       id: r.raffle.id,
-    //       quantity,
-    //     };
-    //   }),
-    // };
-    // try {
-    //   const response = await api.post('/orders', seectedRafflesToSendFormat);
-    //   console.log(response);
-    // } catch (error) {
-    //   // alert("você não esta logado, realize o login ou cadastre-se para completar a operação")
-    //   navigate('/signIn', { replace: true });
 
-    //   // console.log("ola");
-    //   // console.log(error);
-    // }
+    const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+
+    try {
+      const response = await api.post('/orders', {
+        selectedRaffles: selectedRaffles,
+      });
+      Swal.fire({
+        text: 'Pedido realizado com sucesso',
+        icon: 'success',
+      });
+      sessionStorage.setItem('selectedRaffles', JSON.stringify([]));
+    } catch (error) {
+      // console.log(error);
+    }
   };
 
   return (
     <Page title="CheckOut">
       <Container>
         <Box sx={{ flexGrow: 1 }}>
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <form>
             <Grid container spacing={2}>
-              {fields.length === 0 ? (
+              {listRafflesSelected.length === 0 ? (
                 <Grid>
                   {' '}
                   <Grid xs={6} md={8}>
@@ -152,30 +152,30 @@ export default function FullWidthGrid() {
                   </Grid>{' '}
                 </Grid>
               ) : (
-                fields.map((item, index) => (
-                  <Grid key={item.id} xs={6} md={8} {...register(`selectedRaffles.${index}.raffle.id`)}>
+                listRafflesSelected.map((item, index) => (
+                  <Grid key={item.id} xs={6} md={8}>
                     <Grid container spacing={2}>
-                      {item.raffle.products.map((product) => (
+                      {item.products.map((product) => (
                         <Grid key={product.id} xs={6} md={8}>
                           <CardProductModel3 product={product} />
                         </Grid>
                       ))}
 
                       <Grid xs={6} md={4}>
-                        <RaffleDetailsCard raffle={item.raffle} quantity={quantity} />
-                        <Stack>
-                          <input
-                            placeholder="quantity"
+                        <RaffleDetailsCard raffle={item} />
+                        <Stack spacing={1}>
+                          <TextField
+                            label="quantidade"
                             type="number"
-                            {...register(`selectedRaffles.${index}.quantity` as const, {
-                              valueAsNumber: true,
-                              // required: true,
-                            })}
                             defaultValue={item.quantity}
+                            onBlur={(event) => updateQuantityRaffle(event, item)}
                           />
-                          <Button variant="outlined" color="primary" size="small" onClick={() =>
-                            deleteItemLocalHistory(item.raffle,index)
-                          }>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => deleteItemLocalHistory(item)}
+                          >
                             Delete
                           </Button>
                         </Stack>
@@ -185,12 +185,16 @@ export default function FullWidthGrid() {
                 ))
               )}
               <Grid xs={6} md={4}>
-                <Button type="submit" variant="contained">
+                {/* <Typography> */}
+                ola
+                {/* Valor Total: {(price * quantity).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} */}
+                {/* </Typography> */}
+                <Button type="submit" variant="contained" onClick={(event) => handleSubmit(event)}>
                   Concluir pagamento
                 </Button>
               </Grid>
             </Grid>
-          </FormProvider>
+          </form>
         </Box>
       </Container>
     </Page>

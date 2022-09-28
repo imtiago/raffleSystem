@@ -32,67 +32,91 @@ const raffles: IRaffle[] = [
           },
         ],
       },
+      // {
+      //   id: faker.datatype.uuid(),
+      //   name: 'moto',
+      //   price: 18000,
+      //   isNew: true,
+      //   details: 'Uma motoca Top',
+      //   images: [
+      //     {
+      //       id: faker.datatype.uuid(),
+      //       name: 'Iphone 13',
+      //       url: 'https://img.freepik.com/premium-psd/isolated-black-sport-bike-from-left-front-view_16145-349.jpg?w=1380',
+      //     },
+      //     {
+      //       id: faker.datatype.uuid(),
+      //       name: 'Iphone 13',
+      //       url: 'https://img.freepik.com/free-vector/red-color-motorcycle-isolated-white-background_1284-38725.jpg?w=996&t=st=1663814401~exp=1663815001~hmac=a9af4be83cf0d2abb120e45b2e0f34ff755dfc910141d710b2a087660c65bb92',
+      //     },
+      //     {
+      //       id: faker.datatype.uuid(),
+      //       name: 'Iphone 13',
+      //       url: 'https://img.freepik.com/premium-psd/isolated-white-sport-bike-from-left-front-view_16145-365.jpg?w=1380',
+      //     },
+      //   ],
+      // },
     ],
   },
-  {
-    id: faker.datatype.uuid(),
-    price: 20,
-    numbersAvailable: 80,
-    completionDate: '30/11/2022',
-    products: [
-      {
-        id: faker.datatype.uuid(),
-        name: 'moto',
-        price: 18000,
-        isNew: true,
-        details: 'Uma motoca Top',
-        images: [
-          {
-            id: faker.datatype.uuid(),
-            name: 'Iphone 13',
-            url: 'https://img.freepik.com/premium-psd/isolated-black-sport-bike-from-left-front-view_16145-349.jpg?w=1380',
-          },
-          {
-            id: faker.datatype.uuid(),
-            name: 'Iphone 13',
-            url: 'https://img.freepik.com/free-vector/red-color-motorcycle-isolated-white-background_1284-38725.jpg?w=996&t=st=1663814401~exp=1663815001~hmac=a9af4be83cf0d2abb120e45b2e0f34ff755dfc910141d710b2a087660c65bb92',
-          },
-          {
-            id: faker.datatype.uuid(),
-            name: 'Iphone 13',
-            url: 'https://img.freepik.com/premium-psd/isolated-white-sport-bike-from-left-front-view_16145-365.jpg?w=1380',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: faker.datatype.uuid(),
-    price: 50,
-    numbersAvailable: 50,
-    completionDate: '30/11/2022',
-    products: [
-      {
-        id: faker.datatype.uuid(),
-        name: 'carro',
-        price: 40000,
-        isNew: false,
-        details: 'honda Civic',
-        images: [
-          {
-            id: faker.datatype.uuid(),
-            name: 'Iphone 13',
-            url: 'https://img.freepik.com/premium-photo/compact-sports-car-family-sedan-3d-illustration_101266-13581.jpg?w=1480',
-          },
-          {
-            id: faker.datatype.uuid(),
-            name: 'Iphone 13',
-            url: 'https://img.freepik.com/premium-photo/blue-family-innovative-electric-suv-car-white-background-3d-rendering_101266-26688.jpg?w=1480',
-          },
-        ],
-      },
-    ],
-  }
+  // {
+  //   id: faker.datatype.uuid(),
+  //   price: 20,
+  //   numbersAvailable: 80,
+  //   completionDate: '30/11/2022',
+  //   products: [
+  //     {
+  //       id: faker.datatype.uuid(),
+  //       name: 'moto',
+  //       price: 18000,
+  //       isNew: true,
+  //       details: 'Uma motoca Top',
+  //       images: [
+  //         {
+  //           id: faker.datatype.uuid(),
+  //           name: 'Iphone 13',
+  //           url: 'https://img.freepik.com/premium-psd/isolated-black-sport-bike-from-left-front-view_16145-349.jpg?w=1380',
+  //         },
+  //         {
+  //           id: faker.datatype.uuid(),
+  //           name: 'Iphone 13',
+  //           url: 'https://img.freepik.com/free-vector/red-color-motorcycle-isolated-white-background_1284-38725.jpg?w=996&t=st=1663814401~exp=1663815001~hmac=a9af4be83cf0d2abb120e45b2e0f34ff755dfc910141d710b2a087660c65bb92',
+  //         },
+  //         {
+  //           id: faker.datatype.uuid(),
+  //           name: 'Iphone 13',
+  //           url: 'https://img.freepik.com/premium-psd/isolated-white-sport-bike-from-left-front-view_16145-365.jpg?w=1380',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: faker.datatype.uuid(),
+  //   price: 50,
+  //   numbersAvailable: 50,
+  //   completionDate: '30/11/2022',
+  //   products: [
+  //     {
+  //       id: faker.datatype.uuid(),
+  //       name: 'carro',
+  //       price: 40000,
+  //       isNew: false,
+  //       details: 'honda Civic',
+  //       images: [
+  //         {
+  //           id: faker.datatype.uuid(),
+  //           name: 'Iphone 13',
+  //           url: 'https://img.freepik.com/premium-photo/compact-sports-car-family-sedan-3d-illustration_101266-13581.jpg?w=1480',
+  //         },
+  //         {
+  //           id: faker.datatype.uuid(),
+  //           name: 'Iphone 13',
+  //           url: 'https://img.freepik.com/premium-photo/blue-family-innovative-electric-suv-car-white-background-3d-rendering_101266-26688.jpg?w=1480',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // }
 ];
 
 export default raffles;

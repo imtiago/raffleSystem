@@ -1,13 +1,16 @@
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea, CardContent, Stack } from '@mui/material';
 import CardProduct, { IImage } from './ProductCardImage';
 import RaffleDetailsCard from './RaffleDetailsCard';
+import RaffleDetailsCardOptions from './RaffleDetailsCardOptions';
 import ProductDetailsCard from './ProductDetailsCard';
 import Carrocel from '../carrousels/CardCarrousel';
 import ProductCard, { IProduct } from './Product/ProductCard';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
+import ContentProductCard from './Product/ContentProductCard';
 
 export interface IRaffle {
   id: string;
@@ -29,40 +32,65 @@ export default function RaffleCard({ raffle }: ICardProps) {
       container
       // spacing={2}
       sx={{
-        alignItems: 'center',
-        width: '98%',
-        height: '98%',
-        color: 'black',
+        // alignItems: 'center',
+        // width: '98%',
+        // height: '98%',
+        // color: 'black',
+        borderRadius: '10px',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
       }}
     >
       <Grid2
         xs={9}
         sx={
           {
-            display: 'flex',
-            // flexDirection: 'row',
-            alignItems: 'center',
-            // justifyContent: 'center',
-            // width: '100%',
-            height: '100%',
-            // color: 'black',
-            // bgcolor: 'black',
-            // width: '100%',
+            // display: 'flex',
+            // alignItems: 'center',
+            // height: '100%',
+            // backgroundColor: 'yellow',
           }
         }
       >
-        {/* implemnta para varios produtos */}
-        {/* <div style={{ backgroundColor: 'red' }}>teste div 1</div> */}
-        <ProductCard product={raffle.products[0]} />
+        <ContentProductCard products={raffle.products} />
+        {/* <ProductCard product={raffle.products[0]} /> */}
       </Grid2>
       
       <Grid2
         xs={3}
         sx={{
+        //   // flex: 1,
           height: '100%',
+          // bgcolor: 'red',
+        //   display: 'flex',
+        //   alignItems: 'space-between',
+        //   direction: 'column',
+        //   // direction: 'c',
+        //   // justifyContent: 'center',
+        //   // justifyContent: 'space-between',
+        //   // p: 5,
         }}
       >
+        <div>
+          fhkjdshfkj  
+        </div>
+        {/* <Box
+        sx={{
+          // flex: 1,
+          height: '100%',
+          bgcolor: 'red',
+          display: 'flex',
+          // alignItems: 'space-between',
+          // direction: 'column',
+          // direction: 'c',
+          // justifyContent: 'center',
+          justifyContent: 'space-between',
+          // p: 5,
+        }}
+        >
+
         <RaffleDetailsCard raffle={raffle} />
+        <RaffleDetailsCardOptions raffle={raffle} />
+        </Box> */}
       </Grid2>
     </Grid2>
   );

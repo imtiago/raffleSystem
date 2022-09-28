@@ -7,31 +7,24 @@ import RaffleDetailsCard from '../RaffleDetailsCard';
 import ProductDetailsCard from '../ProductDetailsCard';
 import Carrocel from '../../carrousels/CardCarrousel';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
+import ProductCard, { IProduct } from './ProductCard';
+import { useEffect } from 'react';
 
-export interface IProduct {
-  id: string;
-  name: string;
-  price: number;
-  isNew: boolean;
-  link?: string;
-  details: string;
-  images: IImage[];
-}
-
-export interface IRaffle {
-  id: string;
-  price: number;
-  completionDate: string;
-  numbersAvailable: number;
+interface ICardProps {
   products: IProduct[];
 }
 
-interface ICardProps {
-  product: IProduct;
-}
+export default function ContentProductCard({ products }: ICardProps) {
+  let allImages: IImage[] = [];
+  
+  if (products.length === 1)  
+  allImages = products[0].images;
+  else{
+    products.forEach((product) => {
+      allImages = [...allImages, ...product.images];
+    });
+  }
 
-export default function ProductCard({ product }: ICardProps) {
-  const { images, ...rest } = product;
   return (
     <Grid2
       container
@@ -44,7 +37,7 @@ export default function ProductCard({ product }: ICardProps) {
       }}
     >
       <Grid2
-        xs={9}
+        xs={8}
         sx={{
           alignItems: 'center',
           display: 'flex',
@@ -52,16 +45,20 @@ export default function ProductCard({ product }: ICardProps) {
           height: '100%',
         }}
       >
-        <Carrocel images={images} />
+        <Carrocel images={allImages} />
       </Grid2>
       <Grid2
-        xs={3}
+        xs={4}
         sx={{
           height: '100%',
         }}
       >
-        <ProductDetailsCard product={rest} />
-    </Grid2>
+        <Stack>
+          {products.map((product) => {
+            return <ProductDetailsCard product={product} />;
+          })}
+        </Stack>
+      </Grid2>
     </Grid2>
   );
 }

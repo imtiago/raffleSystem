@@ -25,12 +25,10 @@ const Toast = Swal.mixin({
   },
 });
 
-export default function RaffleDetailsCard({ raffle }: IRaffleProps) {
-  // const [change, setChange] = useState<boolean>(false);
-  const { id, price, completionDate } = raffle;
+export default function RaffleDetailsCardOptions({ raffle }: IRaffleProps) {
+  const { id, price, } = raffle;
 
   function addRaffleMyCard(raffle: IRaffle) {
-    console.log('irei adiciona no sessionStorage');
     const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
 
     if (selectedRaffles.some((selectedRaffle) => selectedRaffle.id === raffle.id)) {
@@ -47,17 +45,13 @@ export default function RaffleDetailsCard({ raffle }: IRaffleProps) {
       icon: 'success',
       title: 'Adicionado com sucesso ao carrinho!',
     });
-    // setChange(!change);
   }
 
   return (
-      <Stack spacing={1}>
-        <Typography variant="h4" align="center">
-          Sorteio
-        </Typography>
-        <Typography>Valor: {price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</Typography>
-        <Typography>Data de Realização: {moment(completionDate).format('DD/MM/YYYY')}</Typography>
-        <Typography>Hora Realização: {moment(completionDate).format('HH:mm')}</Typography>
-      </Stack>
+    <Stack spacing={1}>
+      <Button variant="contained" color="primary" onClick={() => addRaffleMyCard(raffle)}>
+        Participar
+      </Button>
+    </Stack>
   );
 }

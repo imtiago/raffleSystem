@@ -8,6 +8,7 @@ import Toolbar from '../components/Toolbar';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountPopover from '../../../layouts/dashboard/AccountPopover';
 import Checkout from '../../Checkout/Checkout'
+import { useAuth } from '../../../context/AuthContext';
 
 const rightLink = {
   fontSize: 16,
@@ -15,15 +16,13 @@ const rightLink = {
   ml: 3,
 };
 
-// const qntItensCar = 5;
-const userLogged = false;
-
 interface IAppAppBarProps {
   qntItensCar?: number;
 
 }
 // const AppAppBar: React.FC = () => {
 const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
+  const { userLogged } = useAuth()
   return (
     <div>
       <AppBar position="fixed">
@@ -39,8 +38,13 @@ const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
             {'nome da empresa'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          {/* <IconButton size="large" onClick={()=>console.log()} aria-label="show 4 new mails" color="inherit">
+        <Badge badgeContent={qntItensCar} color="error">
+          <ShoppingCartIcon />
+        </Badge>
+      </IconButton> */}
           <Checkout />
-            {userLogged ? (
+            {userLogged() ? (
               <AccountPopover />
             ) : (
               <Box>

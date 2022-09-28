@@ -10,12 +10,17 @@ interface CardSliderProps {
 export default function CardSlider({ raffles }: CardSliderProps) {
   const settings: SliderProps = {
     spaceBetween: 50,
-    navigation: raffles.length >= 1,
+    navigation: raffles.length > 1,
     pagination: raffles.length >= 1 && {
       clickable: true,
     },
     draggable: raffles.length >= 1,
-    loop: raffles.length >= 1,
+    loop: raffles.length > 1,
+    autoplay: {
+      delay: 20000,
+      // disableOnInteraction: false,
+    },
+
     breakpoints: {
       // 300: {
       //   slidesPerView: 1,
@@ -34,30 +39,28 @@ export default function CardSlider({ raffles }: CardSliderProps) {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-      }}
-    >
-      {raffles.length === 1 ? 
-      (
-      //  <div>testando area de visualização</div>
-        <RaffleCard raffle={raffles[0]} />
-      ) 
-      : 
-      (
-        <Slider settings={settings} >
-          {raffles.map((raffle) => (
-            <Slide key={raffle.id}>
-              {/* <div>testando area de visualização</div> */}
-              <RaffleCard raffle={raffle}></RaffleCard>
-            </Slide>
-          ))}
-        </Slider>
-      ) 
-     
-      }
-    </Box>
+    <>
+    <Slider settings={settings}>
+      {raffles.map((raffle) => (
+        <Slide key={raffle.id}>
+          <RaffleCard raffle={raffle} />
+        </Slide>
+      ))}
+    </Slider>
+  
+    </>
   );
 }
+
+
+// {raffles.length === 1 ? (
+//   <RaffleCard raffle={raffles[0]} />
+// ) : (
+//   <Slider settings={settings}>
+//     {raffles.map((raffle) => (
+//       <Slide key={raffle.id}>
+//         <RaffleCard raffle={raffle}></RaffleCard>
+//       </Slide>
+//     ))}
+//   </Slider>
+// )}

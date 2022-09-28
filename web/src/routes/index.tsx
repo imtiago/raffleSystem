@@ -18,7 +18,7 @@ import ValidateUser from '../pages/ValidateUser';
 import Raffle from '../pages/Raffle/index3';
 import SignUp from '../pages/SignUp';
 import SignIn from '../pages/SignIn';
-import Teste from '../pages/Teste';
+// import Teste from '../pages/Teste';
 import NotFound from '../pages/Page404';
 import Product from '../pages/Product';
 import LogoOnlyLayout from "../layouts/LogoOnlyLayout";
@@ -29,12 +29,14 @@ import Settings from '../pages/Settings';
 import { systemRoles } from "../utils/checkRole";
 import navConfig from "../layouts/dashboard/NavConfig";
 // import DashboardApp from '../pages/DashboardApp';
+import Teste from "../pages/List/index";
+
 
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* <Route path="/teste" element={<Teste />} /> */}
+      <Route path="/teste" element={<Teste />} />
       <Route path="/" element={<Home />} />
       <Route path='/signUp' element={<SignUp />} />,
       <Route path="/signIn" element={<SignIn />} />
