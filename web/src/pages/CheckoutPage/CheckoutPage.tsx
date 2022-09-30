@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
 import CardProductModel3 from '../../components/cards/Product/CardProductModel3';
 import mook_raffles from '../../_mock/raffles';
 import { useCallback, useEffect, useState } from 'react';
@@ -9,13 +10,17 @@ import { IRaffle } from '../../components/cards/RaffleCard';
 import RaffleDetailsCard from '../../components/cards/RaffleDetailsCard';
 import { Button, Container, Stack, TextField } from '@mui/material';
 import Page from '../../components/Page';
-import Typography from '../../theme/overrides/Typography';
 import { useForm, useFieldArray, useWatch, Control } from 'react-hook-form';
 import { FormProvider } from '../../components/hook-form';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
+import CheckoutFooterBox from './CheckoutFooterBox';
+import ShopProductCard from '../../sections/@dashboard/products/ProductCard';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { useCart } from '../../context/CartContext';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -25,10 +30,10 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export interface IRaffleSelected {
-  id: string;
-  quantity: number;
-}
+// export interface IRaffleSelected {
+//   id: string;
+//   quantity: number;
+// }
 
 interface IRaffleProps {
   raffle: IRaffle;
@@ -38,79 +43,29 @@ interface IListRafflesSelected extends IRaffle {
   quantity: number;
 }
 
-export default function FullWidthGrid() {
+export default function CheckoutPage() {
   // const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const navigate = useNavigate();
   const { userLogged } = useAuth();
-  const [listRafflesSelected, setListRafflesSelected] = useState<IListRafflesSelected[]>([]);
-  const [rafflesSelected, setRafflesSelected] = useState<IRaffleSelected[]>(
-    () => JSON.parse(sessionStorage.getItem('selectedRaffles') as string) as IRaffleSelected[]
-  );
+  const { cart, updateCart, handleSubmit } = useCart();
 
-  const getItensLocalHistory = useCallback(() => {
-    console.log('estou sendo executada');
-    //     remove(index)
-
-    // console.log(index)
-    // console.log(fields)
-    // console.log(raffle)
-  }, []);
-
-  // const fetchData = useCallback()
-  const deleteItemLocalHistory = (raffle) => {
-    const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-    const newSelectedRaffles = selectedRaffles.filter((selectedRaffle) => selectedRaffle.id !== raffle.id);
-    const newListRafflesSelected = listRafflesSelected.filter((selectedRaffle) => selectedRaffle.id !== raffle.id);
-    sessionStorage.setItem('selectedRaffles', JSON.stringify(newSelectedRaffles));
-    setListRafflesSelected(newListRafflesSelected);
+  const deleteCartRaffle = (raffle) => {
+    const newCart = cart.filter((cartRaffle) => cartRaffle.raffle.id !== raffle.id);
+    updateCart(newCart);
   };
 
   const updateQuantityRaffle = (event, raffle) => {
     const value = event.target.value;
     if (value.length > 0) {
-      const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-      const index = selectedRaffles.findIndex((selectedRaffle) => selectedRaffle.id === raffle.id);
-      selectedRaffles[index].quantity = parseInt(value);
-
-      console.log(selectedRaffles);
-      sessionStorage.setItem('selectedRaffles', JSON.stringify(selectedRaffles));
+      const newCart = cart.map((cartRaffle) => {
+        if (cartRaffle.raffle.id === raffle.id) cartRaffle.quantity = parseInt(value);
+        return cartRaffle;
+      });
+      updateCart(newCart);
     }
-    console.log(event.target.value.length);
-    // console.log(raffle)
-
-    // const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-    // const newSelectedRaffles = selectedRaffles.filter(selectedRaffle => selectedRaffle.id !== raffle.id)
-    // const newListRafflesSelected = listRafflesSelected.filter(selectedRaffle => selectedRaffle.id !== raffle.id)
-    // sessionStorage.setItem('selectedRaffles',JSON.stringify(newSelectedRaffles));
-    // setListRafflesSelected(newListRafflesSelected)
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-
-        // console.log(rafflesSelected)
-
-        const selectedRafflesIds = rafflesSelected.map((selectedRaffle) => selectedRaffle.id);
-        // const t = rafflesSelected.
-        // console.log(rafflesSelected.)
-        const list = await api.post('/rafflesIds', { rafflesIds: selectedRafflesIds });
-        const listFormated = list.data.map((d) => {
-          return {
-            ...d,
-            ...rafflesSelected.find((r) => r.id === d.id),
-          };
-        });
-        setListRafflesSelected(listFormated);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleSubmit = async (event) => {
+  const onHandleSubmit = async (event) => {
     event.preventDefault();
 
     if (!userLogged()) {
@@ -121,82 +76,87 @@ export default function FullWidthGrid() {
       navigate('/signIn');
       return;
     }
-
-    const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
-
-    try {
-      const response = await api.post('/orders', {
-        selectedRaffles: selectedRaffles,
-      });
-      Swal.fire({
-        text: 'Pedido realizado com sucesso',
-        icon: 'success',
-      });
-      sessionStorage.setItem('selectedRaffles', JSON.stringify([]));
-    } catch (error) {
-      // console.log(error);
-    }
+    handleSubmit();
   };
 
-  return (
-    <Page title="CheckOut">
-      <Container>
-        <Box sx={{ flexGrow: 1 }}>
-          <form>
-            <Grid container spacing={2}>
-              {listRafflesSelected.length === 0 ? (
-                <Grid>
-                  {' '}
-                  <Grid xs={6} md={8}>
-                    Nenhum item no carrinho
-                  </Grid>{' '}
-                </Grid>
-              ) : (
-                listRafflesSelected.map((item, index) => (
-                  <Grid key={item.id} xs={6} md={8}>
-                    <Grid container spacing={2}>
-                      {item.products.map((product) => (
-                        <Grid key={product.id} xs={6} md={8}>
-                          <CardProductModel3 product={product} />
-                        </Grid>
-                      ))}
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // const selectedRafflesIds = cart.map((cartRaffle) => cartRaffle.raffle.id);
+  //       // const list = await api.post('/rafflesIds', { rafflesIds: selectedRafflesIds });
+  //       // const newcart = cart.map((cartRaffle) => {
+  //       //   list.data.forEach(raffle=>{
+  //       //     if(raffle.id === cartRaffle.raffle.id) {
+  //       //   });
+  //       // });
+  //       // const selectedRaffles: IRaffleSelected[] = JSON.parse(sessionStorage.getItem('selectedRaffles') as string);
+  //       // console.log(rafflesSelected)
+  //       // const selectedRafflesIds = rafflesSelected.map((selectedRaffle) => selectedRaffle.id);
+  //       // // const t = rafflesSelected.
+  //       // // console.log(rafflesSelected.)
+  //       // console.log(list);
+  //       // const listFormated = list.data.map((d) => {
+  //       //   return {
+  //       //     ...d,
+  //       //     ...rafflesSelected.find((r) => r.id === d.id),
+  //       //   };
+  //       // });
+  //       // setListRafflesSelected(listFormated);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
-                      <Grid xs={6} md={4}>
-                        <RaffleDetailsCard raffle={item} />
-                        <Stack spacing={1}>
-                          <TextField
-                            label="quantidade"
-                            type="number"
-                            defaultValue={item.quantity}
-                            onBlur={(event) => updateQuantityRaffle(event, item)}
-                          />
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            onClick={() => deleteItemLocalHistory(item)}
-                          >
-                            Delete
-                          </Button>
-                        </Stack>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ))
-              )}
-              <Grid xs={6} md={4}>
-                {/* <Typography> */}
-                ola
-                {/* Valor Total: {(price * quantity).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} */}
-                {/* </Typography> */}
-                <Button type="submit" variant="contained" onClick={(event) => handleSubmit(event)}>
-                  Concluir pagamento
-                </Button>
-              </Grid>
+  return (
+    <Container>
+      <form>
+        <Grid container spacing={2}>
+          <Alert severity="warning" variant="filled" sx={{ position: 'fixed', right: '0' }}>
+            <AlertTitle>Atenção</AlertTitle>
+            So aceitamos pagamentos através do <strong>PIX</strong>
+          </Alert>
+          {cart.length === 0 ? (
+            <Grid xs={6} md={8}>
+              Nenhum item no carrinho
             </Grid>
-          </form>
-        </Box>
-      </Container>
-    </Page>
+          ) : (
+            cart.map((cartRaffle, index) => {
+              const { raffle, quantity } = cartRaffle;
+              return (
+                <Grid container key={raffle.id} xs={6} md={8} justifyContent="space-between">
+                  <Grid container spacing={3}>
+                    {raffle.products.map((product) => (
+                      <Grid key={product.id}>
+                        <ShopProductCard product={product} />
+                      </Grid>
+                    ))}
+                  </Grid>
+
+                  <Grid xs={6} md={4}>
+                    <RaffleDetailsCard raffle={raffle} />
+                    <Stack spacing={1}>
+                      <TextField
+                        label="quantidade"
+                        type="number"
+                        defaultValue={quantity}
+                        onBlur={(event) => updateQuantityRaffle(event, raffle)}
+                      />
+                      <Button variant="outlined" color="primary" size="small" onClick={() => deleteCartRaffle(raffle)}>
+                        Delete
+                      </Button>
+                    </Stack>
+                  </Grid>
+                </Grid>
+              );
+            })
+          )}
+        </Grid>
+        <Grid xs={6} md={4}>
+          <CheckoutFooterBox />
+        </Grid>
+      </form>
+    </Container>
   );
 }

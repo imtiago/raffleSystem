@@ -14,6 +14,7 @@ import DashboardLayout from '../layouts/dashboard';
 // import Blog from '../pages/Blog';
 import User from '../pages/User';
 import Order from '../pages/Order';
+import Indication from '../pages/Indication';
 import ValidateUser from '../pages/ValidateUser';
 import Raffle from '../pages/Raffle/index3';
 import SignUp from '../pages/SignUp';
@@ -56,6 +57,7 @@ const AppRoutes = () => {
           />
 
           <Route path='/orders' element={<Order />} />,
+          <Route path='/qrCode' element={<Indication />} />,
 
 
           {/* <Route element={<PrivateRoutes roles={[systemRoles.ROLE_ADMIN, systemRoles.ROLE_USER]} />}>, */}

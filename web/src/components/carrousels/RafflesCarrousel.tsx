@@ -17,7 +17,7 @@ export default function CardSlider({ raffles }: CardSliderProps) {
     draggable: raffles.length >= 1,
     loop: raffles.length > 1,
     autoplay:{
-      delay: 5000,
+      delay: 1000,
       // disableOnInteraction: false,
     },
     breakpoints: {

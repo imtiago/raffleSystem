@@ -80,6 +80,11 @@ const navConfig: itemNav[] = [
     icon: getIcon('eva:alert-triangle-fill'),
   },
   {
+    title: 'Indicação',
+    path: '/qrCode',
+    icon: getIcon('eva:settings-2-fill'),
+  },
+  {
     title: 'Configurações',
     path: '/settings',
     icon: getIcon('eva:settings-2-fill'),

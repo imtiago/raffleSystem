@@ -6,9 +6,13 @@ import React from 'react';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SearchIcon from '@mui/icons-material/Search';
 import AccountPopover from '../../../layouts/dashboard/AccountPopover';
-import Checkout from '../../Checkout/Checkout'
+import Checkout from '../../Checkout/Checkout';
+import DetailsOrder from '../../DetailsOrder/DetailsOrder';
 import { useAuth } from '../../../context/AuthContext';
+import { useCart } from '../../../context/CartContext';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 
 const rightLink = {
   fontSize: 16,
@@ -16,13 +20,11 @@ const rightLink = {
   ml: 3,
 };
 
-interface IAppAppBarProps {
-  qntItensCar?: number;
-
-}
+interface IAppAppBarProps {}
 // const AppAppBar: React.FC = () => {
-const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
-  const { userLogged } = useAuth()
+const AppAppBar = ({}: IAppAppBarProps) => {
+  const { userLogged } = useAuth();
+  const { cart } = useCart();
   return (
     <div>
       <AppBar position="fixed">
@@ -37,15 +39,32 @@ const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
           >
             {'Acredite você tambem'}
           </Link>
-          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-          {/* <IconButton size="large" onClick={()=>console.log()} aria-label="show 4 new mails" color="inherit">
-        <Badge badgeContent={qntItensCar} color="error">
-          <ShoppingCartIcon />
-        </Badge>
-      </IconButton> */}
-          <Checkout />
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+            {/* <IconButton
+              size="large"
+              onClick={() => console.log(cart.length)}
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={cart.length} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton> */}
+            <Checkout />
+            {/* <Button variant="outlined" size="large" color="inherit" endIcon={<SearchIcon />}>
+            <AccountPopover />
+              Consulte sua ordem
+            </Button> */}
             {userLogged() ? (
-              <AccountPopover />
+              <Button
+                variant="outlined"
+                href="/dashboard"
+                size="large"
+                color="inherit"
+                startIcon={<DashboardRoundedIcon />}
+              >
+                inicio
+              </Button>
             ) : (
               <Box>
                 <Link color="inherit" variant="h6" underline="none" href="/signIn/" sx={rightLink}>
@@ -56,9 +75,11 @@ const AppAppBar = ({ qntItensCar }: IAppAppBarProps) => {
                 </Link>
               </Box>
             )}
+            <DetailsOrder />
           </Box>
         </Toolbar>
       </AppBar>
+      {/* <Checkout /> */}
     </div>
   );
 };

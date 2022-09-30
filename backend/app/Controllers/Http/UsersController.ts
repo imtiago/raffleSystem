@@ -53,15 +53,19 @@ export default class UsersController {
       .where("user_id", userId)
       .where("token", tokenId)
       .first();
+
+      // console.log(confirmCredentials)
       
-      if (confirmCredentials) {
-        await Event.emit("verified:user", userId);
-        }
+      if (!confirmCredentials)
+        return response.ok("<div><h1>Usuário já verificado!</h1><div>");
+
+      await Event.emit("verified:user", userId);
       }catch (err) {
         // Logger.error(err);
-        return response.conflict();
+        return response.conflict("<div><h1>Usuário já verificado!</h1><div>");
       }
-    return response.ok("conta verificada com sucesso!");
+    // return response.ok("conta verificada com sucesso!");
+    return response.ok("<div><h1>conta verificada com sucesso!</h1><div>");
   }
   public async store({ auth, request, response }: HttpContextContract) {
     Logger.info("Store User");
@@ -80,10 +84,6 @@ export default class UsersController {
     const token = await auth.use("api").generate(user as User);
 
     Event.emit("new:user", { user, token });
-
-    // console.log(url)
-    // if (!userModel)
-    // new VerifyEmail(userModel, url).preview();
 
     return response.created(user);
   }

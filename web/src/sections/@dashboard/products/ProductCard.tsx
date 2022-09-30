@@ -5,16 +5,9 @@ import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 import { IProduct } from '../../../components/cards/Product/ProductCard';
+import Img from '../../../components/Img/Img';
 
 // ----------------------------------------------------------------------
-
-const ProductImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-});
 
 export interface ProductCardProps {
   product: IProduct;
@@ -24,8 +17,10 @@ export default function ShopProductCard({product}: ProductCardProps) {
 const { name, price, isNew, link, images } = product
   return (
     <Card>
-      <Box sx={{ pt: '100%', position: 'relative' }}>
-         <ProductImgStyle alt={name} src={images[0].url || ''} />
+      <Box sx={{ 
+        pt: '100%', 
+        position: 'relative' }}>
+         <Img alt={name} src={images[0].url || ''} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>

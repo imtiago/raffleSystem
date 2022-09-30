@@ -1,10 +1,10 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
+import { Grid, Container, Typography } from "@mui/material";
 // components
-import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
+import Page from "../../components/Page";
+import Iconify from "../../components/Iconify";
 // sections
 import {
   AppTasks,
@@ -16,36 +16,35 @@ import {
   AppWidgetSummary,
   AppCurrentSubject,
   AppConversionRates,
-} from '../../sections/@dashboard/app';
-import { useAuth } from '../../context/AuthContext';
-import { useEffect, useState } from 'react';
-import api from '../../services/api';
+} from "../../sections/@dashboard/app";
+import { useAuth } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
+import api from "../../services/api";
+import PixIcon from "@mui/icons-material/Pix";
 
 // ----------------------------------------------------------------------
 interface Dash {
-  qntUsers: number,
-  qntRaffles: number,
-  qntProducts: number,
-  qntOrders: number
+  qntUsers: number;
+  qntRaffles: number;
+  qntProducts: number;
+  qntOrders: number;
 }
 
 export default function Index() {
   const theme = useTheme();
   const title = "Dashboard";
-  const { user } = useAuth()
-  const [dash, setDash] = useState<Dash>({} as Dash)
+  const { user } = useAuth();
+  const [dash, setDash] = useState<Dash>({} as Dash);
 
-  useEffect(()=>{
-    const getInformations = async ()=>{
-      try{
-        const response = await api.get('/dashboard')
-        setDash(response.data)
-      }catch{
-        
-      }
-    }
+  useEffect(() => {
+    const getInformations = async () => {
+      try {
+        const response = await api.get("/dashboard");
+        setDash(response.data);
+      } catch {}
+    };
     getInformations();
-  },[])
+  }, []);
   return (
     <Page title={title}>
       <Container maxWidth="xl">
@@ -55,19 +54,38 @@ export default function Index() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Usuários" total={dash?.qntUsers} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary
+              title="Usuários"
+              total={dash?.qntUsers}
+              icon={"ant-design:android-filled"}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Produtos " total={dash?.qntProducts} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary
+              title="Produtos "
+              total={dash?.qntProducts}
+              color="info"
+              icon={"ant-design:apple-filled"}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Concursos" total={dash?.qntRaffles} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary
+              title="Concursos"
+              total={dash?.qntRaffles}
+              color="warning"
+              icon={"ant-design:windows-filled"}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Pedidos" total={dash?.qntOrders} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary
+              title="Pedidos"
+              total={dash?.qntOrders}
+              color="error"
+              icon={"ant-design:bug-filled"}
+            />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -75,35 +93,35 @@ export default function Index() {
               title="Website Visits"
               subheader="(+43%) than last year"
               chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                "01/01/2003",
+                "02/01/2003",
+                "03/01/2003",
+                "04/01/2003",
+                "05/01/2003",
+                "06/01/2003",
+                "07/01/2003",
+                "08/01/2003",
+                "09/01/2003",
+                "10/01/2003",
+                "11/01/2003",
               ]}
               chartData={[
                 {
-                  name: 'Team A',
-                  type: 'column',
-                  fill: 'solid',
+                  name: "Team A",
+                  type: "column",
+                  fill: "solid",
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
+                  name: "Team B",
+                  type: "area",
+                  fill: "gradient",
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
+                  name: "Team C",
+                  type: "line",
+                  fill: "solid",
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
                 },
               ]}
@@ -114,10 +132,10 @@ export default function Index() {
             <AppCurrentVisits
               title="Current Visits"
               chartData={[
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: "America", value: 4344 },
+                { label: "Asia", value: 5435 },
+                { label: "Europe", value: 1443 },
+                { label: "Africa", value: 4443 },
               ]}
               chartColors={[
                 theme.palette.primary.main,
@@ -127,7 +145,7 @@ export default function Index() {
               ]}
             />
           </Grid>
-{/* 
+          {/* 
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"

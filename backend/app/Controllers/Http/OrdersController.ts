@@ -40,15 +40,30 @@ export default class OrdersController {
 
     await order.related("raffles").sync(result);
 
+    Event.emit("new:order", order);
+
     return response.created(order);
   }
 
   // public async findById({ request, response }: HttpContextContract) {
   //   Logger.info("Find Order By Id");
-  //   const { id } = await request.validate(FindOrderByIdValidator);
-  //   const Order = await Order.findBy("id", id);
-  //   return response.ok(Order);
+  //   const { id } = request.params();
+  //   // const { id } = await request.validate(FindOrderByIdValidator);
+  //   // const order = await Order.findBy("id", id)?.load('');
+  //   // return response.ok(order);
   // }
+  public async findByCode({ request, response }: HttpContextContract) {
+    Logger.info("Find Order By Code");
+    const { code } = request.params();
+    // const { id } = await request.validate(FindOrderByIdValidator);
+    const order = await Order.query()
+      .where("code", code)
+      .preload("tickets")
+      .preload("raffles")
+      .first();
+    // console.log(order);
+    return response.ok(order);
+  }
   public async index({ response }: HttpContextContract) {
     Logger.info("index of Orders");
     const Orders = await Order.query()

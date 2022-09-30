@@ -1,7 +1,8 @@
-import { HelmetProvider } from "react-helmet-async";
-import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import Routes from "./routes";
+import { HelmetProvider } from 'react-helmet-async';
+import { BrowserRouter } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import Routes from './routes';
 // theme
 import ThemeProvider from './theme';
 // components
@@ -16,7 +17,9 @@ function App() {
           <ScrollToTop />
           <BaseOptionChartStyle />
           <AuthProvider>
-            <Routes />
+            <CartProvider>
+              <Routes />
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

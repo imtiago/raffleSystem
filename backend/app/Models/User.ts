@@ -115,10 +115,9 @@ export default class User extends AppBaseModel {
     const role = await Role.findByOrFail("name", "ROLE_ASSOCIATE");
     await user.related("roles").saveMany([role]);
     await user.related('wallet').create({
-      // balance: `${user.firstName}_${makeCode(6)}`
     })
     await user.related('indicationCode').create({
-      indicationCode: `${user.firstName}_${makeCode(6)}`
+      indicationCode: `${user.firstName}_${makeCode(5)}`
     })
   }
 } 

@@ -11,6 +11,7 @@ import { AccountProfileDetails } from '../../components/Account/account-profile-
 export default function Index() {
   const theme = useTheme();
   const { user } = useAuth()
+  console.log(user)
 
   return (
     <Page title="Meu Perfil">

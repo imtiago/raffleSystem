@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -19,9 +19,13 @@ interface TokenState {
   token: string;
 }
 
+interface IAuthProviderProps {
+  children: ReactNode;
+}
+
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
-const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider = ({ children }: IAuthProviderProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -51,7 +55,7 @@ const AuthProvider: React.FC = ({ children }) => {
       if (token) {
         try {
           const response = await api.get('/profiles');
-          console.log("response")
+          console.log('response');
           setUser(response.data);
         } catch {}
       }

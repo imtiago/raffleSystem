@@ -3,6 +3,10 @@ import numeral from 'numeral';
 
 // ----------------------------------------------------------------------
 
+export function fCurrency1(number: number) {
+  return number.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+}
+
 export function fCurrency(number: number) {
   return numeral(number).format(Number.isInteger(number) ? '$0,0' : '$0,0.00');
 }

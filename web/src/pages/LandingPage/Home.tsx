@@ -11,7 +11,6 @@ import RaffleSession from '../modules/views/RaffleSession';
 import { useSearchParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 
-
 function Index() {
   const [params] = useSearchParams();
   // const [qntItensCar, setQntItensCar] = useState<number>(0);
@@ -20,9 +19,10 @@ function Index() {
   useEffect(() => {
     // console.log("acessando o use callback")
 
-    const selectedRafflesString = sessionStorage.getItem('selectedRaffles');
-    if (!selectedRafflesString) 
-    sessionStorage.setItem('selectedRaffles',JSON.stringify([]));
+    // const selectedRafflesString = sessionStorage.getItem('selectedRaffles');
+    // if (!selectedRafflesString)
+    // sessionStorage.setItem('selectedRaffles',JSON.stringify([]));
+
     // else{
     //   const selectedRaffles = JSON.parse(selectedRafflesString)
     //   if(selectedRaffles.length !== qntItensCar) {
@@ -30,18 +30,17 @@ function Index() {
     //   }
     // }
 
-    if(params.get("indicationCode")){
-      const indicationCode = params.get("indicationCode") as string;
+    if (params.get('indicationCode')) {
+      const indicationCode = params.get('indicationCode') as string;
       sessionStorage.setItem('indicationCode', indicationCode);
       // localStorage.setItem('indicationCode', indicationCode);
     }
-  },[])
-
+  }, []);
 
   return (
     <>
-      <AppAppBar/>
-      <RaffleSession/>
+      <AppAppBar />
+      <RaffleSession />
       {/* <ProductHero /> */}
       {/* <ProductValues /> */}
       {/* <ProductCategories /> */}

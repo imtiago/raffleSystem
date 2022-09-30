@@ -1,7 +1,8 @@
 import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, Card, Box } from '@mui/material';
+import Img from '../Img/Img';
 
-export interface IImage{
+export interface IImage {
   id: string;
   url: string;
   name: string;
@@ -14,13 +15,14 @@ interface ICardProps {
 export default function ProductCardImage({ image }: ICardProps) {
   const { url, name } = image;
   return (
-    <CardActionArea
+    <Card
       sx={{
-        width: 300,
-        height: 400,
+        width: 400,
+        height: 450,
+        position: 'relative',
       }}
     >
-      <CardMedia component="img" height="400" image={url} alt={name} />
-    </CardActionArea>
+        <Img src={url} alt={name} />
+    </Card>
   );
 }

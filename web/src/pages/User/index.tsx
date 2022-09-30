@@ -30,6 +30,7 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@das
 import api from '../../services/api';
 import { RegisterForm } from '../../sections/auth/register';
 import RegisterUserModal from '../../components/Modals/RegisterUser';
+import { EnumStatusUser } from '../../utils/Enums';
 
 // ----------------------------------------------------------------------
 
@@ -203,7 +204,7 @@ export default function index() {
                         {/* <TableCell align="left">{'Yes'}</TableCell> */}
                         <TableCell align="left">{phone}</TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
+                          <Label variant="ghost" color={(status === EnumStatusUser.inactive.status && 'error') || 'success'}>
                             {sentenceCase(status)}
                           </Label>
                         </TableCell>

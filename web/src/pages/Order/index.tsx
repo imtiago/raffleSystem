@@ -33,6 +33,8 @@ import { RegisterForm } from '../../sections/auth/register';
 import RegisterUserModal from '../../components/Modals/RegisterUser';
 import { AppWidgetSummary } from '../../sections/@dashboard/app';
 import moment from 'moment';
+import Swal from 'sweetalert2';
+import { EnumStatusOrder } from '../../utils/Enums';
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +76,14 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+});
 
 export default function index() {
   const [page, setPage] = useState(0);
@@ -138,6 +148,25 @@ export default function index() {
   const filteredItems = applySortFilter(itemsList, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredItems.length === 0;
+
+  const assignPayment = (order) => { 
+    try{
+      api.get(`/orders/${order.id}/paymentReceived`);
+      Toast.fire({
+        icon: 'success',
+        title: 'Operação relizada com sucesso!',
+      });
+      return;
+    }catch(err){
+      Toast.fire({
+        icon: 'error',
+        title: 'Pagamento ja foi recebido!',
+      });
+      return;
+      console.log(err);
+    }
+  }
+
 
   useEffect(() => {
     const getUsers = async () => {
@@ -215,8 +244,8 @@ export default function index() {
                           value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                         }</TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'AWAITING_PAYMENT' && 'error') || 'success'}>
-                            {sentenceCase(status)}
+                          <Label variant="ghost" color={(status === EnumStatusOrder.AWAITING_PAYMENT.status && 'error') || 'success'}>
+                            {sentenceCase(EnumStatusOrder[status].label)}
                           </Label>
                         </TableCell>
                         <TableCell align="left">{
@@ -224,7 +253,7 @@ export default function index() {
                         }</TableCell>
 
                         <TableCell align="right">
-                          <OrderMoreMenu />
+                          <OrderMoreMenu confirmPaymentFunc={()=>{assignPayment(row)}} />
                         </TableCell>
                       </TableRow>
                     );

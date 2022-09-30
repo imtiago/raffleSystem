@@ -35,11 +35,9 @@ Route.post("/signIn", "UsersController.signIn");
 Route.post("/rafflesIds", "RafflesController.findIds");
 Route.get("/raffles", "RafflesController.index");
 Route.post("/users", "UsersController.store");
-
+Route.get("/orders/:code", "OrdersController.findByCode");
 
 Route.get("/orders/:id/paymentReceived", "OrdersController.paymentReceived");
-
-
 
 //Attention!! here you have push all routes with need authentication
 Route.group(() => {
@@ -58,15 +56,6 @@ Route.group(() => {
     Route.delete("/:id", "UsersController.delete");
   }).prefix("/users");
 
-
-
-
-
-
-
-
-
-
   Route.group(() => {
     Route.post("/", "ProductsController.store").middleware([
       "acl:CREATE_PRODUCT",
@@ -84,6 +73,7 @@ Route.group(() => {
   Route.group(() => {
     Route.post("/", "OrdersController.generate");
     Route.get("/", "OrdersController.index");
+    // Route.get("/:id", "OrdersController.findById");
   }).prefix("/orders");
 
   Route.group(() => {

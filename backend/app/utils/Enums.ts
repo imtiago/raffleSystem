@@ -3,6 +3,7 @@ export interface IStatusProduct {
   id: string;
   label: string;
 }
+
 export const EnumStatusRaffle = {
   canceled: { status: "CANCELED", label: "cancelada" },
   accomplished: { status: "ACCOMPLISHED", label: "realizada" },

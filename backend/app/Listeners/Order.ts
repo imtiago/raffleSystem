@@ -3,12 +3,18 @@ import User from "App/Models/User";
 import Event from "@ioc:Adonis/Core/Event";
 // import VerifyEmail from "App/Mailers/VerifyEmail";
 import Wallet from "App/Models/Wallet";
-import whats from "Config/whatsapp";
 
 export default class Order {
+  public async onNewOrder(order) {
+    // send email to user
+    const userOrder = await User.findOrFail(order.userId)
+
+    const orderReceivedMensagem = `Olá ${userOrder.fullName} \n Recebemos o seu pedido de Nº${order.id} e o mesmo ja foi processado, aguardamos o pagamento para gerar seu(s) bilhete(s).`
+    await Event.emit("sendText", { phone: userOrder.phone, message: orderReceivedMensagem });
+  }
   public async onPaymentReceived(order) {
     // send email to user
-    const percents = [7,4,3];
+    const percents = [8,4,2];
     const userOrder = await User.findOrFail(order.userId)
 
     const value = order.value;
@@ -41,8 +47,9 @@ export default class Order {
     // new VerifyEmail(data.user, url).preview();
 
     // send mensage to user whatsapp
+    // await whats.sendText(userOrder.phone,paymentReceivedMensagem)
+    // console.log("mensage enviada com sucesso")
     const paymentReceivedMensagem = `Olá ${userOrder.fullName}\n Recebemos seu pagamento no valor de ${value}.`
-    await whats.sendText(userOrder.phone,paymentReceivedMensagem)
-    console.log("mensage enviada com sucesso")
+    await Event.emit("sendText", { phone: userOrder.phone, message: paymentReceivedMensagem });
   }
 }

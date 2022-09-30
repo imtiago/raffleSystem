@@ -12,13 +12,13 @@ import ProductCard, { IProduct } from './Product/ProductCard';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import ContentProductCard from './Product/ContentProductCard';
 
-export interface IRaffle {
-  id: string;
-  price: number;
-  completionDate: string;
-  numbersAvailable: number;
-  products: IProduct[];
-}
+// export interface IRaffle {
+//   id: string;
+//   price: number;
+//   completionDate: string;
+//   numbersAvailable: number;
+//   products: IProduct[];
+// }
 
 interface ICardProps {
   raffle: IRaffle;
@@ -54,19 +54,19 @@ export default function RaffleCard({ raffle }: ICardProps) {
       >
         <ContentProductCard products={raffle.products} />
       </Grid2>
-      
+
       <Grid2
         xs={3}
         sx={{
-        //   // flex: 1,
+          //   // flex: 1,
           // height: '100%',
           // bgcolor: 'secondary.main',
           // bgcolor: 'red',
           // display: 'flex',
           // alignItems: 'space-between',
           // direction: 'column',
-        //   // direction: 'c',
-        //   // justifyContent: 'center',
+          //   // direction: 'c',
+          //   // justifyContent: 'center',
           // justifyContent: 'space-between',
           p: 5,
         }}
