@@ -3,10 +3,10 @@ import Env from "@ioc:Adonis/Core/Env";
 const gerenciaNetConfig = {
   // PRODUÇÃO = false
   // HOMOLOGAÇÃO = true
-  sandbox: false,
-  client_id: Env.get("seuClientId"),
-  client_secret: Env.get("seuClientSecret"),
-  pix_cert: Env.get("caminhoAteOCertificadoPix"),
+  // sandbox: Env.get("GN_SANDBOX"),
+  client_id: Env.get("GN_CLIENTE_ID"),
+  client_secret: Env.get("GN_CLIENTE_SECRET"),
+  // pix_cert: Env.get("GN_PATH_PIX_CERT"),
 };
 
 export default gerenciaNetConfig;

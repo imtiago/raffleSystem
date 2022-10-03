@@ -46,33 +46,30 @@ export default class UsersController {
     const { userId, tokenId } = request.params();
     // console.log(userId, tokenId);
 
-    try{
-
+    try {
       const confirmCredentials = await Database.from("api_tokens") // 👈 gives an instance of select query builder
-      .select("*")
-      .where("user_id", userId)
-      .where("token", tokenId)
-      .first();
+        .select("*")
+        .where("user_id", userId)
+        .where("token", tokenId)
+        .first();
 
       // console.log(confirmCredentials)
-      
+
       if (!confirmCredentials)
         return response.ok("<div><h1>Usuário já verificado!</h1><div>");
 
       await Event.emit("verified:user", userId);
-      }catch (err) {
-        // Logger.error(err);
-        return response.conflict("<div><h1>Usuário já verificado!</h1><div>");
-      }
+    } catch (err) {
+      // Logger.error(err);
+      return response.conflict("<div><h1>Usuário já verificado!</h1><div>");
+    }
     // return response.ok("conta verificada com sucesso!");
     return response.ok("<div><h1>conta verificada com sucesso!</h1><div>");
   }
   public async store({ auth, request, response }: HttpContextContract) {
     Logger.info("Store User");
     const { indicationCode: indicationCodeReceived, ...userData } =
-      await request.validate(
-        StoreUserValidator
-      );
+      await request.validate(StoreUserValidator);
     const user = await User.create(userData);
 
     if (indicationCodeReceived) {

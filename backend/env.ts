@@ -26,4 +26,10 @@ export default Env.rules({
   SMTP_PORT: Env.schema.number(),
   SMTP_USERNAME: Env.schema.string(),
   SMTP_PASSWORD: Env.schema.string(),
+
+  // GN_SANDBOX: Env.schema.boolean(),
+  GN_CLIENTE_ID: Env.schema.string(),
+  GN_CLIENTE_SECRET: Env.schema.string(),
+  // GN_PATH_PIX_CERT: Env.schema.string(),
+  // GN_ENDPOINT: Env.schema.string(),
 });

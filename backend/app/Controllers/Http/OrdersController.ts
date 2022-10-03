@@ -42,6 +42,9 @@ export default class OrdersController {
 
     Event.emit("new:order", order);
 
+    const gn = await Event.emit("generatorRequestPayment", order);
+    console.log(gn);
+
     return response.created(order);
   }
 
