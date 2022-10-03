@@ -12,7 +12,7 @@ export default class Order {
     // send email to user
     const userOrder = await User.findOrFail(order.userId);
 
-    const orderReceivedMensagem = `Olá ${userOrder.fullName} \n Recebemos o seu pedido de Nº${order.id} e o mesmo ja foi processado, aguardamos o pagamento para gerar seu(s) bilhete(s).`;
+    const orderReceivedMensagem = `Olá ${userOrder.fullName} \n Recebemos o seu pedido de Nº ${order.code}, e o mesmo ja foi processado, aguardamos o pagamento para gerar seu(s) bilhete(s).`;
     await Event.emit("sendText", {
       phone: userOrder.phone,
       message: orderReceivedMensagem,
