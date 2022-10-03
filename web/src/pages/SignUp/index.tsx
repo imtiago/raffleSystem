@@ -1,6 +1,7 @@
 import { Link as RouterLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
+import { Stack } from '@mui/material';
 import { Card, Link, Container, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
@@ -12,6 +13,7 @@ import { RegisterForm } from '../../sections/auth/register';
 import AuthSocial from '../../sections/auth/AuthSocial';
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import ButtonBackToHome from '../../components/ButtonBackToHome';
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +61,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
-  const { userLogged } = useAuth();
+  const { isLogeed } = useAuth();
   const navigate = useNavigate();
   const smUp = useResponsive('up', 'sm');
 
@@ -70,14 +72,17 @@ export default function Register() {
   // const indicationCode = params.get("indicationCode") || ''
 
   useEffect(() => {
-    if (userLogged()) navigate('/dashboard', { replace: true });
+    if (isLogeed) navigate('/dashboard', { replace: true });
   }, []);
 
   return (
     <Page title="Register">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          <Stack display="flex" direction="row" spacing={1}>
+            <Logo />
+            <ButtonBackToHome />
+          </Stack>
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Já possui uma conta? {''}

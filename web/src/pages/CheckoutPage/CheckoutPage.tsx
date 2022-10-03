@@ -46,7 +46,7 @@ interface IListRafflesSelected extends IRaffle {
 export default function CheckoutPage() {
   // const [raffles, setRaffles] = useState<IRaffle[]>([]);
   const navigate = useNavigate();
-  const { userLogged } = useAuth();
+  const { isLogeed } = useAuth();
   const { cart, updateCart, handleSubmit } = useCart();
 
   const deleteCartRaffle = (raffle) => {
@@ -57,18 +57,24 @@ export default function CheckoutPage() {
   const updateQuantityRaffle = (event, raffle) => {
     const value = event.target.value;
     if (value.length > 0) {
+      let update = false;
       const newCart = cart.map((cartRaffle) => {
-        if (cartRaffle.raffle.id === raffle.id) cartRaffle.quantity = parseInt(value);
+        if (cartRaffle.raffle.id === raffle.id) {
+          if (cartRaffle.quantity !== parseInt(value)) {
+            cartRaffle.quantity = parseInt(value);
+            update = true;
+          }
+        }
         return cartRaffle;
       });
-      updateCart(newCart);
+      if (update) updateCart(newCart);
     }
   };
 
   const onHandleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!userLogged()) {
+    if (!isLogeed) {
       Swal.fire({
         text: 'Você precisa está logado para realizar essa operação, Realize o login ou cadastre-se para prosseguir',
         icon: 'warning',
@@ -154,7 +160,7 @@ export default function CheckoutPage() {
           )}
         </Grid>
         <Grid xs={6} md={4}>
-          <CheckoutFooterBox />
+          <CheckoutFooterBox handleFunc={onHandleSubmit} />
         </Grid>
       </form>
     </Container>

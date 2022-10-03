@@ -13,27 +13,10 @@ import { useCallback, useEffect, useState } from 'react';
 
 function Index() {
   const [params] = useSearchParams();
-  // const [qntItensCar, setQntItensCar] = useState<number>(0);
-
-  // useCallback(() => {
   useEffect(() => {
-    // console.log("acessando o use callback")
-
-    // const selectedRafflesString = sessionStorage.getItem('selectedRaffles');
-    // if (!selectedRafflesString)
-    // sessionStorage.setItem('selectedRaffles',JSON.stringify([]));
-
-    // else{
-    //   const selectedRaffles = JSON.parse(selectedRafflesString)
-    //   if(selectedRaffles.length !== qntItensCar) {
-    //     setQntItensCar(selectedRaffles.length)
-    //   }
-    // }
-
     if (params.get('indicationCode')) {
       const indicationCode = params.get('indicationCode') as string;
       sessionStorage.setItem('indicationCode', indicationCode);
-      // localStorage.setItem('indicationCode', indicationCode);
     }
   }, []);
 
@@ -47,7 +30,7 @@ function Index() {
       {/* <ProductHowItWorks /> */}
       {/* <ProductCTA /> */}
       {/* <ProductSmokingHero /> */}
-      {/* <AppFooter /> */}
+      <AppFooter />
     </>
   );
 }

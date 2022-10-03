@@ -7,41 +7,43 @@ import { Box, Container, Typography, Card, CardActions, CardContent, Divider } f
 import Img from '../../components/Img/Img';
 import generateQR from '../../utils/GeneratorQrCode';
 import { useEffect, useState } from 'react';
-// const APP_URL = process.env.APP_URL
+// import.meta.env.VITE_APP_URL
+
+const BASE_URL = import.meta.env.VITE_APP_URL;
 // ----------------------------------------------------------------------
 export default function Index() {
   const { user } = useAuth();
   const [qrCode, setQrCode] = useState('');
 
   useEffect(() => {
-    console.log(import.meta.env)
     const generate = async () => {
       if (user) {
-        const qr = await generateQR(`${user?.indicationCode.indicationCode}`);
+        const qr = await generateQR(`${BASE_URL}/${user?.indicationCode.indicationCode}`);
         setQrCode(qr);
       }
-    }
+    };
     generate();
-  },[])
+  }, []);
 
   return (
     <Page title="Meu Perfil">
       <Container maxWidth="xl">
         <Box
-        sx={{ 
-          mb: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '400px',
-          height: '400px',
-          // bgcolor: 'red',
-          position: 'relative',
-          }}>
-            <Img src={qrCode} />
+          sx={{
+            mb: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '400px',
+            height: '400px',
+            // bgcolor: 'red',
+            position: 'relative',
+          }}
+        >
+          <Img src={qrCode} />
 
-        {/* <Card>
+          {/* <Card>
           <CardContent>
             <Box
               sx={{
@@ -62,7 +64,7 @@ export default function Index() {
             <Typography color="primary">{user?.indicationCode.indicationCode}</Typography>
           </CardActions>
         </Card> */}
-              </Box>
+        </Box>
       </Container>
     </Page>
   );

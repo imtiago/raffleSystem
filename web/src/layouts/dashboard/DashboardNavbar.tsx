@@ -11,6 +11,7 @@ import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import ButtonBackToHome from '../../components/ButtonBackToHome';
 
 // ----------------------------------------------------------------------
 
@@ -46,8 +47,8 @@ interface DashboardNavBarProps {
 // };
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavBarProps) {
-    const { user }= useAuth();
-    const navegation = useNavigate()
+  const { user } = useAuth();
+  const navegation = useNavigate();
 
   return (
     <RootStyle>
@@ -60,22 +61,23 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavBarProps)
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-            <Button
-              onClick={() => {
-                navegation('/qrCode');
-              }}
-              variant="contained"
-            >
-              {user?.indicationCode.indicationCode}
-            </Button>
-            <Button
-              onClick={() => {
-                alert('voce vai conseguir realizar saques clickando aqui');
-              }}
-              variant="outlined"
-            >
-              {user?.wallet.balance.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
-            </Button>
+          <ButtonBackToHome />
+          <Button
+            onClick={() => {
+              navegation('/qrCode');
+            }}
+            variant="contained"
+          >
+            {user?.indicationCode.indicationCode}
+          </Button>
+          <Button
+            onClick={() => {
+              alert('voce vai conseguir realizar saques clickando aqui');
+            }}
+            variant="outlined"
+          >
+            {user?.wallet.balance.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+          </Button>
           <LanguagePopover />
           <NotificationsPopover />
           <AccountPopover />

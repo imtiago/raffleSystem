@@ -1,10 +1,11 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Index = () => {
-  const { userLogged } = useAuth();
+  const { isLogeed } = useAuth();
+  // console.log(isLogeed);
 
-  return (!userLogged())? <Navigate to="/signIn" />:<Outlet />
+  return !isLogeed ? <Navigate to="/signIn" /> : <Outlet />;
 };
 
 export default Index;
@@ -22,7 +23,7 @@ export default Index;
 
 // const PrivateRoutes: React.FC<RoutesPropsData> = ({ children ,role, ...rest }) => {
 //   const [permissions, setPermissions] = useState(null);
-  
+
 //   const { user, userLogged } = useAuth();
 
 //   // useEffect(() => {
@@ -46,7 +47,7 @@ export default Index;
 //   }
 
 //   console.log(permissions)
-  
+
 //   return permissions? <>
 //   {children}
 //   </>: <Navigate to="/dashboard" />;

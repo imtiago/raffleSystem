@@ -3,20 +3,15 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 interface AuthContextState {
-  token: TokenState;
+  isLogeed: boolean;
   signIn({ email, password }: UserData): Promise<void>;
   signOut(): Promise<void>;
-  userLogged(): boolean;
   user: any;
 }
 
 interface UserData {
   email: string;
   password: string;
-}
-
-interface TokenState {
-  token: string;
 }
 
 interface IAuthProviderProps {
@@ -26,41 +21,18 @@ interface IAuthProviderProps {
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
 const AuthProvider = ({ children }: IAuthProviderProps) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [k, setUs] = useState(false);
-  const [token, setToken] = useState<TokenState>(() => {
+  const [isLogeed, setIsLogeed] = useState(() => {
     const token = localStorage.getItem('@PermissionYT:token');
-
-    if (token !== null) {
-      api.defaults.headers['Authorization'] = `Bearer ${token}`;
-
-      return { token };
-    }
-
-    return {} as TokenState;
+    if (token) return true;
+    return false;
   });
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // const token = localStorage.getItem("@PermissionYT:token");
-    // if (token && (location.pathname === '/signUp')) {
-    //       navigate('/dashboard', { replace: true });
-    // }
-  }, []);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const token = localStorage.getItem('@PermissionYT:token');
-      if (token) {
-        try {
-          const response = await api.get('/profiles');
-          console.log('response');
-          setUser(response.data);
-        } catch {}
-      }
-    };
-    getUser();
+  const getUser = useCallback(async () => {
+    try {
+      const response = await api.get('/profiles');
+      setUser(response.data);
+    } catch {}
   }, []);
 
   const signIn = useCallback(async ({ email, password }: UserData) => {
@@ -68,37 +40,29 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     api.defaults.headers['Authorization'] = `Basic ${base64encodedData}`;
     const response = await api.post('/signIn');
-    // console.log(response)
 
     const { token } = response.data;
 
     localStorage.setItem('@PermissionYT:token', token);
+
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
-    setToken({ token } as TokenState);
-    // navigate('/dashboard');
-    navigate('/dashboard', { replace: true });
+    await getUser();
   }, []);
 
   const signOut = useCallback(async () => {
     await api.get('/logout');
-
-    setToken({} as TokenState);
 
     localStorage.removeItem('@PermissionYT:token');
 
     delete api.defaults.headers['Authorization'];
   }, []);
 
-  const userLogged = useCallback(() => {
-    const token = localStorage.getItem('@PermissionYT:token');
-    if (token) {
-      return true;
-    }
-    return false;
+  useEffect(() => {
+    if (isLogeed) getUser();
   }, []);
 
-  return <AuthContext.Provider value={{ user, token, signIn, signOut, userLogged }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isLogeed, signIn, user, signOut }}>{children}</AuthContext.Provider>;
 };
 
 function useAuth(): AuthContextState {

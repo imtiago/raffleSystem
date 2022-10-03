@@ -16,12 +16,12 @@ import { useAuth } from '../../../context/AuthContext';
 // ----------------------------------------------------------------------
 
 interface SignInData {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 export default function LoginForm() {
   const navigate = useNavigate();
-  const {signIn} = useAuth()
+  const { signIn } = useAuth();
   // const use
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,11 +47,12 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (signInData: SignInData ) => {
-    const {email, password} = signInData;
-    // console.log(signInData)
-    await signIn({email, password})
+  const onSubmit = async (signInData: SignInData) => {
+    const { email, password } = signInData;
+    await signIn({ email, password });
+    // console.log('ola');
     // navigate('/dashboard', { replace: true });
+    navigate('/dashboard');
   };
 
   return (

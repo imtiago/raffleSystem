@@ -5,16 +5,15 @@ import PixIcon from '@mui/icons-material/Pix';
 import { useCart } from '../../context/CartContext';
 import { useCallback, useEffect, useState } from 'react';
 
-interface CheckoutFooterBox {
-  qntRaffles: number;
-  totalValue: number;
+interface CheckoutFooterProps {
+  handleFunc: (event) => void;
 }
-export default function CheckoutFooterBox() {
+export default function CheckoutFooter({ handleFunc }: CheckoutFooterProps) {
   const { cart } = useCart();
   const [totalValue, setTotalValue] = useState(0);
 
   const initValue = useCallback(() => {
-    const value = cart.reduce((prevValue, cartRaffle) => prevValue + cartRaffle.raffle.price, 0);
+    const value = cart.reduce((prevValue, cartRaffle) => prevValue + cartRaffle.raffle.price * cartRaffle.quantity, 0);
     setTotalValue(value);
   }, []);
 
@@ -47,7 +46,8 @@ export default function CheckoutFooterBox() {
         color="primary"
         size="large"
         startIcon={<PixIcon />}
-        // onClick={(event) => handleSubmit(event)}
+        onClick={(event) => handleFunc(event)}
+        disabled={cart.length === 0 ? true : false}
       >
         Concluir pagamento
       </Button>

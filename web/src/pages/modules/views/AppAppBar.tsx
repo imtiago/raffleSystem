@@ -23,7 +23,7 @@ const rightLink = {
 interface IAppAppBarProps {}
 // const AppAppBar: React.FC = () => {
 const AppAppBar = ({}: IAppAppBarProps) => {
-  const { userLogged } = useAuth();
+  const { isLogeed } = useAuth();
   const { cart } = useCart();
   return (
     <div>
@@ -55,7 +55,8 @@ const AppAppBar = ({}: IAppAppBarProps) => {
             <AccountPopover />
               Consulte sua ordem
             </Button> */}
-            {userLogged() ? (
+            {/* {userLogged() ? ( */}
+            {isLogeed ? (
               <Button
                 variant="outlined"
                 href="/dashboard"

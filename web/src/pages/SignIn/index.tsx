@@ -1,6 +1,7 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
+import { Stack } from '@mui/material';
 import { Card, Link, Container, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
@@ -10,9 +11,9 @@ import Logo from '../../components/Logo';
 // sections
 import { LoginForm } from '../../sections/auth/login';
 import AuthSocial from '../../sections/auth/AuthSocial';
-import {useAuth} from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useEffect } from 'react';
-
+import ButtonBackToHome from '../../components/ButtonBackToHome';
 
 // ----------------------------------------------------------------------
 
@@ -60,23 +61,25 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function SignIn() {
-  const { userLogged } = useAuth()
+  const { isLogeed } = useAuth();
   const navigate = useNavigate();
 
   const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
-  
-  useEffect(()=>{
-    if(userLogged())
-    navigate('/dashboard', { replace: true });
-  },[])
+
+  useEffect(() => {
+    if (isLogeed) navigate('/dashboard', { replace: true });
+  }, []);
 
   return (
     <Page title="Login">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          <Stack display="flex" direction="row" spacing={1}>
+            <Logo />
+            <ButtonBackToHome />
+          </Stack>
 
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
@@ -99,7 +102,7 @@ export default function SignIn() {
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Typography sx={{ mb: 5 }} align='center' variant="h4" gutterBottom>
+            <Typography sx={{ mb: 5 }} align="center" variant="h4" gutterBottom>
               Faça seu Login
             </Typography>
 
@@ -113,7 +116,7 @@ export default function SignIn() {
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Ainda Não possui uma conta? {''}
                 <Link variant="subtitle2" component={RouterLink} to="/signUp">
-                Cadastrar-se
+                  Cadastrar-se
                 </Link>
               </Typography>
             )}

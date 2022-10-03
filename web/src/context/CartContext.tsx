@@ -2,7 +2,6 @@ import React, { createContext, ReactNode, useCallback, useContext, useEffect, us
 import Swal from 'sweetalert2';
 import api from '../services/api';
 import { IRaffle } from '../utils/interfaces';
-import { useAuth } from './AuthContext';
 import Toast from '../components/Toast';
 
 interface ICartRaffle {
@@ -34,7 +33,6 @@ interface ICartProviderProps {
 
 const CartProvider = ({ children }: ICartProviderProps) => {
   const [cart, setCart] = useState<ICartRaffle[]>([]);
-  const { userLogged } = useAuth();
 
   const addCartSessionStore = useCallback((cart: ICartRaffle[]) => {
     sessionStorage.setItem('cart', JSON.stringify(cart));
